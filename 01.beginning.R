@@ -41,5 +41,7 @@ plot(people, microplastics, pch=19, cex=5, col= "blue")
 
 #next lesson exemple how the amount of zinc can be related to the amount of another element in the soil
 
+# you can add package in R for example CRAN vedi meglio
 
+'/tmp/RtmpcxM85y/downloaded_packages'
 
