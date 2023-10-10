@@ -23,3 +23,53 @@ cl <- colorRampPalette(c("black", "red", "orange", "yelow"))(100)
 #otuside of the functions we are using gradient 100 are the number of diferent coors pasing from black to orange to reed to yellow
 #now we can plot the density map
 plot(densitymap, col=cl)
+
+#EXERCISE
+#To built a new color palette
+cl.ex <- colorRampPalette(c("beige", "aquamarine3", "blueviolet", "darkorange"))(100)
+plot(densitymap, col=cl.ex)
+
+#there were additional data inside the spatstat package ex: 
+plot(bei.extra)
+#we now have density map and additional value 
+#we have to variant, one is the elevation the other one is gradiant
+#we want to select the first element
+elev <- bei.extra[[1]]
+plot(elev)
+#so we use the forst variable which is the elevation
+
+#the symbol $ 
+#bei.extra$lev is another manner to select one, in this way we link the variable
+
+
+##what we learnt : how to pass from point to cotinuous map, how to use color, how to plot different things together
+
+#multiframe is the totality of the map
+#we're going to state that raw=1,2 (one rope two color). 
+
+
+##let's make a multiframe
+par(mfrow=c(1,2))
+plot(densitymap)
+plot(elev)
+#what i did was opening mfrow 1.2 and than plot inside the densitymap and the elevation
+
+#if we do one colon and two rows
+par(mfrow=c(2,1))
+plot(densitymap)
+plot(elev)
+
+
+#exercise
+par(mfrow=c(1,3))
+plot(bei)
+plot(densitymap)
+plot(elev)
+
+
+#first point, second density, third elevation
+#the higher elevation of area corrispond to the less density o tree as we can see from the map
+#bye <3
+#next lecture deal with population with package called "sdm", install plantnet into your phone
+
+
