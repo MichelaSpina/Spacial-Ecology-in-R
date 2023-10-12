@@ -35,6 +35,7 @@ plot(bei.extra)
 #we have to variant, one is the elevation the other one is gradiant
 #we want to select the first element
 elev <- bei.extra[[1]]
+#two quadratic parentesis since we are using image
 plot(elev)
 #so we use the forst variable which is the elevation
 
