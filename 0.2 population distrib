@@ -1,0 +1,123 @@
+## install.packages("terra", "sdm")
+#Terra is doing everything dealing with spatial in R 
+#we're going to use some function of terra packages
+
+## sdm = species distribution model
+library (sdm) 
+library (terra) ##not using quotes because we use packages that are installed thus we dont need quotes
+
+#use data provided by the package 
+system.file #general function that is going to catch a name of file in R system
+#inside the package there is a folder and inside the folder "external" there's a file called species.shp
+
+system.file("external/species.shp", package="sdm")
+file <- system.file("external/species.shp", package="sdm")
+## vectors are series of coordinations. we're dealing with point in spaces thus with vectors.
+##there's a function in terra to pass from the name to the vector
+#example
+rana <- vect(file)
+# you can see the structure of the file
+rana$Occurrence
+#the 0 can be a probem because is an uncertain data. but let's take the zero as a real absence
+
+##how to see the data
+plot(rana)
+plot(rana, cex=0.5) 
+
+##we want to select only presence from our data set
+#double equal means equal
+## quadratic parentesis is used to select elements
+# 
+
+pres <- (rana[rana$Occurrence == 1,])
+pres
+
+#exercise: select absence and call them abse
+
+abse$Occurrence
+abse <- (rana[ranaOccurrence == 0,])
+ #the coma close the query
+plot(abse)
+
+#use par to see the two graphics in one row and two colons
+
+#exercise plot presences and absences one beside the other
+
+par(mfrow=c(1,2))
+plot(pres)
+plot(abse)
+
+#everytime you have graph nulling use dev.off
+
+#exercise: plot abse and pres together with two different colors
+plot(pres, col="red")
+plot(abse, col="black")
+
+#predictors: environmental variables
+#elevation is the name of the file we import
+
+elev <- system.file("external/elevation.asc", package="sdm")
+
+#rasters are images
+plot(elev)
+
+points(pres)
+
+elevmap <- rast(elev)
+#rast is a function from terra package
+
+elevmap
+plot(elevmap)
+points(pres, cex=.5)
+#most individuals are distributed in the middle elevation
+
+#we can do the same with temperature
+#asc is like jpag
+temp <- system.file("external/temperature.asc", package="sdm")
+temp
+tempmap <- rast(temp)
+plot(tempmap)
+
+
+points(pres, cex=.5)
+#places with very low temperature which we dont find rana temporaria
+
+ #exercise do the same with vegetation with vegetation.asc
+vege <- system.file("external/vegetation.asc", package="sdm")
+vege
+vegemap <- rast(vege)
+plot(vegemap)
+points(pres, cex=.5)
+#rast function import as a raster (image)
+#high vegetation cover is preferred as habit for rana temporaria
+
+ #same with precipitation
+ precip <- system.file("external/precipitation.asc", package="sdm")
+precip
+precipmap <- rast(precip)
+plot(precipmap)
+points(pres, cex=.5)
+
+#final multiframe
+par(mfrow=c(2,2))
+
+#elev
+plot <- (elevmap)
+points(pres, cex=.5)
+#temp
+plot(tempmap)
+points(pres, cex=.5)
+
+#vege
+plot(vegemap)
+points(pres, cex=.5)
+
+#precip
+plot(precipmap)
+points(pres, cex=.5)
+
+#how to use raster data, 
+#how to put points on raster data, 
+#multiframe and how to explain distribution of the population based on predictors
+
+
