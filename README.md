@@ -3,6 +3,9 @@
 #Professor 👨‍🔬
 Duccio Rocchini
 
+#student 
+Michela Spina
+
 ## How to create a list
 + script on populations
 + scripts on communities
