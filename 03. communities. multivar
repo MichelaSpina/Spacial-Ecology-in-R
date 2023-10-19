@@ -1,0 +1,52 @@
+## multivariate analysis
+#vegan package from Pierre Legendre , is a community ecology package
+#oridation methods is synonimous of mutivariate analysis
+
+#let's work in R with this package
+#the dataset is called "dune" : data()
+
+data(dune)
+dune #we have the all data in the console
+#a matrix of several plots where in the colons we have all the species and several rows with the number of that species
+#another manner is concern with function that is called "head" that is going to show the first six rows
+head(dune)
+#there's the function "tail" with which you can see the end of the matrix
+
+
+##
+#function decorana in the vegan package (detreded corresponence analysis) 
+#assig a name
+ord <- decorana(dune)
+#we can have summary of what happened
+ord
+#we have lot of numb and data. see the first two axis 
+#if we make a sum of al axis we can see the percentage of all the axis each
+
+ldc1 = 3.7004
+ldc2 = 3.1166
+ldc3 = 1.30055
+ldc4 =  1.47888
+total = ldc1 + ldc2 + ldc3 + ldc4
+
+#we wanna know the percentage of the rain
+pldc1 = ldc1 * 100 / total
+pldc2 = ldc2 * 100 / total
+plcd3 = ldc3 * 100 / total
+pldc4 = ldc4 * 100 / total
+
+pldc1 + pldc2
+
+#final plot
+plot (ord)
+#the names are the species thus we can see that there are species which love to stay each other
+#show the data in a graph help us to understand the correlation between species 
+#in graph we can see just two dimension
+
+#species are also related in time
+#some of the time is overlapping
+#how much different species are overlapping ach other? 
+#so we can undertand better how to monitoring and conservate this species
+
+#now we are going to use another package that is overlap
+install.packages("overlap")
+#new file is coming
