@@ -1,0 +1,46 @@
+#we're going to build a graph
+#we have installd 
+#in time we should use kernel density (amount of times we've seen that species)
+#kerinici seblat national park
+
+#data
+data(kerinci)
+head(kerinci) #and we can see the first six variable in xone, space and time
+the first six lines are related to the tiger
+
+#summary
+summary(kerinci)
+#we have the count of the different individuals seen by the cameratraps
+
+#moves of an animal in a day
+#tiger
+#put the name of the dataset kerinci and put the square parentesis
+#the coon containing the species should be equal to tiger
+#the dollr is linkink
+tiger <- kerinci[kerinci$Sps=="tiger",]
+tiger
+
+#one important step: the time we are using is linear but this package is working not in linear but in circular time
+#we should pass from line to radiant (circular time)
+kerinci$time * 2 * pi
+#assing the calculation to an object
+timeRed <- kerinci$time * 2 * pi
+
+ #we can make plot to see what are the pix in time to see the tiger
+plot(tiger$timeRed)
+timetig <- tiger$timeRed
+densityPlot(timetig, rug=TRUE)
+
+
+
+#let's do it with another species
+#exercise: select oonly, the data on the macaque individuals
+
+macaque <- kerinci[kerinci$Sps=="macaque",]
+#make variable in time with macaque
+timemac <- macaque$timeRed
+densityplot(timemac, rug =TRUE)
+
+#take data from tiger and macaque and see together
+overlapPlot(timetig, timemac)
+
