@@ -1,0 +1,61 @@
+#How can we download our own data and use it??
+
+# https://earthobservatory.nasa.gov/ <- what we're going to use today, less heavy.
+
+## https://www.youtube.com/watch?v=KA2L4bDmo98 <- follow the video and download data (frome esa, 10m resolution)
+
+#We downloaded the image and put inside the folder:  https://eoimages.gsfc.nasa.gov/images/imagerecords/152000/152086/najafiraq_etm_2003140_lrg.jpg
+#let's upload the image inside R
+#using packages
+
+library(terra)
+
+#working directory. set the working directory with the function setwd()
+#explain to r what is te wd we're going to work with
+#setwd()
+# qith windows : setwd("C:// not \\
+#directory in which you will put the data
+setwd("C:/Users/Utente/OneDrive - Università di Napoli Federico II/Desktop/SPATIAL ECOLOGY")
+#why Napoli federico II ?! XD
+#function rast
+#rast() the same thing as im.import, since the image is not in a package we use rast()
+rast("najafiraq_etm_2003140_lrg.JPG")
+naja <- rast("najafiraq_etm_2003140_lrg.JPG")
+#We have to add .JPG to read it in windows
+
+plotRGB(naja, r=1, g=2, b=3) #im-plotRGB
+
+
+#exercise : download the second image
+setwd("C:/Users/Utente/OneDrive - Università di Napoli Federico II/Desktop/SPATIAL ECOLOGY")
+najaeug <- rast("najafiraq_oli_2023219_lrg.JPG")
+plotRGB(najaeug, r=1, g=2, b=3) 
+
+#multitemporal analysis change detection
+#important: put it in the same folder
+najadif= naja[[1]] - najaeug[[1]]
+cl <- colorRampPalette(c("brown", "grey", "orange")) (100)
+plot(najadif, col=cl)
+
+dev.off()
+
+#our own image
+Lakechad <- rast("lakechad_ms1_1973_lrg.JPG")
+plotRGB(Lakechad, r=1, g=2, b=3)
+plotRGB(Lakechad, r=2, g=3, b=1)
+
+#download the image from 2017
+Lakechad2017 <- rast("lakechad_oli_2017_lrg.JPG")
+
+#Let's compare the two images
+par(mfrow=c(2,1))
+plotRGB(Lakechad, r=1, g=2, b=3)
+plotRGB(Lakechad2017, r=1, g=2, b=3)
+
+#for the next lecture install ncdf4
+#allowing you to upload inside R the nc dataset
+
+
+
+
+
