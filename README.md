@@ -3,16 +3,16 @@
 #Professor 👨‍🔬
 Duccio Rocchini
 
-#student 
+#student
 Michela Spina
 
-## How to create a list
+## list of arguments
 + script on populations
 + scripts on communities
 + scripts of ecosystems
 
-## How to create notes
-> one
-> two
-> three
+## notes
+> i am 26
+> i am graduated in Veteinary Medicine
+> i fight for climate and social justice
 
