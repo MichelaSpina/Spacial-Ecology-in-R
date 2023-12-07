@@ -1,0 +1,102 @@
+#lets classify image from NASA
+
+library(terra)
+library(imageRy)
+
+im.list()
+
+sun <- im.import("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
+sunc <- im.classify(sun, num_clusters=3)
+plot(sunc)
+
+#state the class with higher energy
+plot(sun) 
+#and see the correlation with 
+plot(sunc)
+
+#classify satellite data
+
+im.list()
+#"matogrosso_ast_2006209_lrg.jpg"             
+#"matogrosso_l5_1992219_lrg.jpg" 
+m1992 <- im.import("matogrosso_ast_2006209_lrg.jpg")
+m2006 <- im.import("matogrosso_l5_1992219_lrg.jpg")
+#difficult to discriminate
+
+plotRGB(m1992)
+
+# c for classify
+m1992c <- im.classify(m1992, num_clusters=2)
+
+plot(m1992c)
+#classes: forest=1; human=2
+
+##we're going to classify the image from 2006
+m2006c <- im.classify(m2006c, num_clusters=2)
+plot(m2006c)
+
+#let's compare the images
+par(mfrow=c(1,2))
+plot(m1992c)
+plot(m2006c)
+
+#i have now three images but i i install again the imagery package i could par the two images
+#we can par them in this way
+par(mfrow=c(1,2))
+plot(m1992c[[1]])
+plot(m2006c[[1]])
+
+
+#how many pixel
+f1992 <- freq(m1992c)
+f1992
+#     layer value   count
+#1     1     1 3262004
+#2     1     2 3937996
+#calculate the percentage dividing by the total num of pixels
+#extract the total num of the pixels
+
+> tot1992 <- ncell(m1992c)
+> tot1992
+[1] 7200000
+#percentage
+p1992 <- f1992 *100 / tot1992
+ p1992
+         layer        value    count
+1 1.388889e-05 1.388889e-05 45.30561
+2 1.388889e-05 2.777778e-05 54.69439
+# forest:45% human:54% 
+#i have actually inverted the two images :'D so this percentage is from the 2006 image 
+#all the data are inverted xD
+
+#building the final table
+class <- c("forest", "human)
+y1992 <- c(45, 54)
+#do it for real y2006 <- (45, 54) , in 1992 the percentage should be 83 and 17
+#this percentage are always from 2006 
+#fix at home
+
+tabout <- data.frame(class, y1992, y2006)
+tabout
+
+
+
+#finalgraph
+libray(ggplot)
+class <- c("forest", "human")
+y1992 <- c(83, 17)
+y2006 <- c(45, 55)
+#we're going to plot the table
+p1 <- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identify", fill="white")
+#aes=aestethic
+#geometry can be related to any statistics but actually we are now using the real value
+
+#rather than using contonuous data we put it in graph
+
+
+
+
+
+
+
+
