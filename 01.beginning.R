@@ -22,6 +22,7 @@ sophi <- c(10, 20, 30, 50, 70) # microplasics
 
 paula <- c(100, 500, 600, 1000, 2000) #people
 #paula as indipendent value
+#we concatenate with c
 
 plot(paula, sophi)
 
