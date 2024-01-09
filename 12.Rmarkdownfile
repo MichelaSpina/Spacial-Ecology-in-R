@@ -1,0 +1,40 @@
+#Rmarkdown language
+
+
+---
+title: "MarkdownReport"
+author: "Michela Spina"
+date: "2024-01-09"
+output: html_document
+---
+
+
+#we used markdown once we were describing our repository
+#My first Markdown document
+
+here we can add some test if we want 
+
+#first preview of what we're doing pressing knit
+
+```{r, eval=T}
+library(imageRy)
+```
+
+#to to the three ''' just copy paste from duccio
+#what is the language we are using and if we want to run the code or not in graph parentesisi.
+#languege = r   
+#eval=2 this is stating if the code should lead to a result or not 
+#to close the code you close with the three '''
+#we put the title with # (markdown language) 1
+#we put some writing 2 
+#we put the cose that is going to need a result 3
+#eval = T -> true
+```{r, eval=T}
+2 + 3
+```
+
+#in this case we're not attaining a result
+```{r, eval=F}
+ 2 + 3
+```
+
