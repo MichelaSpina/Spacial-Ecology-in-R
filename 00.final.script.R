@@ -8,21 +8,22 @@
 #04 REMOTE SENSING DATA
 #05 SPECTRAL INDICIES
 #06 TIME SERIES
-#07 eXTERNAL DATA CODE
+#07 EXTERNAL DATA CODE
 #08 COPERNICUS DATA
 #09 CLASSIFICATION
 #10 VARIABILITY
-#PRINCIPAL COMPONENT ANALYSIS
+#11 PRINCIPAL COMPONENT ANALYSIS
 
-
+#---------------------------------
 
 # 01 Beginning
 #INTRODUCTION TO R
-# Here under hasghtag you can write anything you wwant and the software will not report it. it's a comment you can put. 
+# Here under hasghtag you can write anything you wwant and the software will not detect it. it's just a comment you can put. 
 # let's use R as calculator
 2 + 3
 
-# Assign to an object 
+# Assign a value to an object thus we rename the object
+# we created a variable with an assigned value
 zima <- 2 + 3
 zima
 
@@ -31,48 +32,61 @@ duccio <- 5 + 3
 duccio
 
 
-
+#we rename the final operation
 final <- duccio + zima
 final
+
 final^2 # results multiply for itself
 
-# array a series of info coded together
-sophi <- c(10, 20, 30, 50, 70) # microplasics
-#the function in R has parentesis and the symbols inside the parentesis are called arguments
+# array a series of info coded all together
+#we concatenate all the data by using "c" Function
+sophi <- c(10, 20, 30, 50, 70) # grams of microplasics in different spots of a lake
+#the function in R has parentesis and the symbols inside the parentesis are called ARGUMENTS
 
-paula <- c(100, 500, 600, 1000, 2000) #people
-#paula as indipendent value
-#we concatenate with c
+paula <- c(100, 500, 600, 1000, 2000) 
+#different amount of people in that spots as second variable
 
+
+#LET'S CREATE A PLOT between the two variable
+#thus we can observe the correlation between the two variable
 plot(paula, sophi)
+plot
 
+
+#if i want to modify the plotting labels, i have to assign new name
+#use xlab for the x axis and ylab for the y one
 plot(paula, sophi, xlab= "number of people", ylab= "microplastics")
 #there is another manner to do that, i can assign the object sophi an paula to new object
 people <- paula
 microplastics <- sophi
 
 plot(people, microplastics)
-
-#we want to use another point symbol
+ 
+#we want to use another point symbol in the plot using "pch"
+#to know which one we want to use we google point symbols in R"
 plot(people, microplastics, pch=19)
 https://www.google.com/search?q=point+symbols+in+r&oq=point+symbols+in+r&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigATIHCAMQIRigATIHCAQQIRigATIKCAUQIRgWGB0YHjIKCAYQIRgWGB0YHjIKCAcQIRgWGB0YHjIKCAgQIRgWGB0YHjIKCAkQIRgWGB0YHtIBCTUwOTlqMGoxNagCALACAA&sourceid=chrome&ie=UTF-8#vhid=J2JAWpPtTvK7JM&vssid=l
 
+#let's change the SIZE OF THE PLOT POINTS
 plot(people, microplastics, pch=19, cex=5)
+#with argument "col" we can also change points' color
 plot(people, microplastics, pch=19, cex=5, col= "blue")
 
-#next lesson exemple how the amount of zinc can be related to the amount of another element in the soil
 
-# you can add package in R for example CRAN vedi meglio
-
+#download packages here
 '/tmp/RtmpcxM85y/downloaded_packages'
+#HOW TO INSTAL PACKAGES IN R:
+#"install.packages("nakìme of the package")
+#we quote the name since we are importing external data in R
 
 #-----------------------------------------------------
 
 #02 Density population
-# 0.3 population ecology 10/10/23
+#Codes related to population ecology
+
 #we are going to deal with density and dispersion
 ## density = individuals per unit area
-## first package is spatstat, we introdue it in R with quotes
+## first package is spatstat, we download it thus we can point pattern analysis
 library(spatstat)
 #the dataset is called bei, composed by huge amount of data.
 plot(bei) 
