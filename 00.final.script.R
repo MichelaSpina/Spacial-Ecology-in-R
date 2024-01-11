@@ -80,30 +80,37 @@ plot(people, microplastics, pch=19, cex=5, col= "blue")
 #we quote the name since we are importing external data in R
 
 #-----------------------------------------------------
-
+ 
 #02 Density population
 #Codes related to population ecology
 
 #we are going to deal with density and dispersion
 ## density = individuals per unit area
 ## first package is spatstat, we download it thus we can point pattern analysis
+install.packages("spatstat")
 library(spatstat)
-#the dataset is called bei, composed by huge amount of data.
+#the dataset inside spatstat is called bei, composed by huge amount of data.
 plot(bei) 
-##we can creat a density map
-#let's bild the density map, from the point to a density map
-#there's a function in spatstat, passing from point to a continuous surface
+#we can creat a density map
+#let's bild the density map, from thousands of points
+#there's a function in spatstat, which allows us to go from points to a continuous surface
+#the function will consider a group of dots as a single unit
+#each unit is going to be more or less dense according to the number of dots
 
-#the function is called density. we want to assing the function to an object
+#the function is called density. 
+#let's rename the function
 densitymap <- density(bei)
-#i change from points to pixel. pixel are representing the landscape and what compose the image
+#Now on the console we don't have dots but pixels
+#pixels are representing the landscape and what compose the image
+
+
 #if we use the plot function it will simply erase the previous map
-#the funtion which s adding and not erasing the previous map is called points
+#the funtion which is adding the new map without erasing the previous one is called points
 points(bei, cex=.2)
-#the maps are overlapped
+#the maps are now overlapped
 #avoid maps with blue green and red since daltonic peolple cannot see the difference
-#so let's change the color using one function
-use quots when you write colors
+#so let's change the color using ColorRampPalette function
+#and use quots when you write colors
 cl <- colorRampPalette(c("black", "red", "orange", "yelow"))(100)
 #otuside of the functions we are using gradient 100 are the number of diferent coors pasing from black to orange to reed to yellow
 #now we can plot the density map
