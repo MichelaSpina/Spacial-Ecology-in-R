@@ -112,42 +112,44 @@ points(bei, cex=.2)
 #so let's change the color using ColorRampPalette function
 #and use quots when you write colors
 cl <- colorRampPalette(c("black", "red", "orange", "yelow"))(100)
-#otuside of the functions we are using gradient 100 are the number of diferent coors pasing from black to orange to reed to yellow
-#now we can plot the density map
+#otuside of the functionswe use (100) as gradient, indicating the number of diferent colors 
 plot(densitymap, col=cl)
 
 #EXERCISE
-#To built a new color palette
+#how to buid a new color palette
 cl.ex <- colorRampPalette(c("beige", "aquamarine3", "blueviolet", "darkorange"))(100)
 plot(densitymap, col=cl.ex)
 
-#there were additional data inside the spatstat package ex: 
+
+
+#there were additional data inside the spatstat package 
+#we now use "bei.extra" dataset
 plot(bei.extra)
 #we now have density map and additional value 
-#we have to variant, one is the elevation the other one is gradiant
+#we have two variant, one is the elevation the other one is gradiant
 #we want to select the first element
 elev <- bei.extra[[1]]
 #two quadratic parentesis since we are using image
 plot(elev)
-#so we use the forst variable which is the elevation
+#so we use the first variable which is the elevation
 
 #the symbol $ 
 #bei.extra$lev is another manner to select one, in this way we link the variable
 
+#what we learnt : how to pass from point to cotinuous map, how to use color, how to plot different things together
 
-##what we learnt : how to pass from point to cotinuous map, how to use color, how to plot different things together
 
 #multiframe is the totality of the map
-#we're going to state that raw=1,2 (one rope two color). 
+#use "par" as function and "multiframe" as argument
+#we're going to state how many rows and coloumns. 
 
-
-##let's make a multiframe
+#let's make a multiframe
 par(mfrow=c(1,2))
 plot(densitymap)
-plot(elev)
+plot(elev) #run the elements together
 #what i did was opening mfrow 1.2 and than plot inside the densitymap and the elevation
 
-#if we do one colon and two rows
+#if we do one coloumn and two rows
 par(mfrow=c(2,1))
 plot(densitymap)
 plot(elev)
