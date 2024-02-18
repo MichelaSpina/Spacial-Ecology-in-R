@@ -258,18 +258,24 @@ plot(pres, cex=1, col="darkgreen")
 points(abse, cex=1, col="lightgreen")
 
 #UNDESTRAND THE GAPS IN SOME AREAS
+# There are some variables to explain and understand why, in these specific areas, the frog is not present.
 #predictors: environmental variables
+
+# HOW TO IMPORT AN IMAGE AS A FILE FROM OUTSIDE R?
+#using system.files function
 #elevation is the name of the file we import
 
 elev <- system.file("external/elevation.asc", package="sdm")
+#asc is a type of file like jpag
+#we call it elev
 
-#rasters are images
-plot(elev)
+#we are going to use a function: rast
+#rasters are images, since we are dealing with images we dont use vect like before with points
 
-points(pres)
 
 elevmap <- rast(elev)
 #rast is a function from terra package
+plot(elev)
 
 elevmap
 plot(elevmap)
