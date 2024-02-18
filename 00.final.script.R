@@ -92,12 +92,20 @@ library(spatstat)
 #the dataset inside spatstat is called bei, composed by huge amount of data.
 plot(bei) 
 #we can creat a density map
+
+# HOW TO CHANGE THE DOTS SIZE AND STYLE?
+# We use the "cex" and "pch" functions
+plot(bei, cex=0.5, pch=19)
+
+
 #let's bild the density map, from thousands of points
 #there's a function in spatstat, which allows us to go from points to a continuous surface
 #the function will consider a group of dots as a single unit
 #each unit is going to be more or less dense according to the number of dots
 
-#the function is called density. 
+
+#PASSING FROM POINTS TO CONTINUOUS SURFACE:
+#the function  we use is called density. 
 #let's rename the function
 densitymap <- density(bei)
 #Now on the console we don't have dots but pixels
@@ -107,7 +115,9 @@ densitymap <- density(bei)
 #if we use the plot function it will simply erase the previous map
 #the funtion which is adding the new map without erasing the previous one is called points
 points(bei, cex=.2)
-#the maps are now overlapped
+#now we just  put the points on the density map ("points" f.) 
+
+#CHANGE COLORS
 #avoid maps with blue green and red since daltonic peolple cannot see the difference
 #so let's change the color using ColorRampPalette function
 #and use quots when you write colors
@@ -122,8 +132,8 @@ plot(densitymap, col=cl.ex)
 
 
 
-#there were additional data inside the spatstat package 
-#we now use "bei.extra" dataset
+#there are ADDITIONAL VARIABLES inside the spatstat package 
+#we now use "bei.extra" dataset 
 plot(bei.extra)
 #we now have density map and additional value 
 #we have two variant, one is the elevation the other one is gradiant
@@ -139,6 +149,7 @@ plot(elev)
 #what we learnt : how to pass from point to cotinuous map, how to use color, how to plot different things together
 
 
+#PLOT SEVERAL THINGS TOGETHERE
 #multiframe is the totality of the map
 #use "par" as function and "multiframe" as argument
 #we're going to state how many rows and coloumns. 
@@ -152,7 +163,7 @@ plot(elev) #run the elements together
 #if we do one coloumn and two rows
 par(mfrow=c(2,1))
 plot(densitymap)
-plot(elev)
+plot(elev) #run all the elemets togethere
 
 
 #exercise
@@ -164,7 +175,6 @@ plot(elev)
 
 #first point, second density, third elevation
 #the higher elevation of area corrispond to the less density o tree as we can see from the map
-#bye <3
 #next lecture deal with population with package called "sdm", install plantnet into your phone
 
 #----------------------------------------------------------------------------
@@ -178,55 +188,76 @@ plot(elev)
 ## sdm = species distribution model
 library (sdm) #species distribution modeling
 library (terra) ##not using quotes because we use packages that are installed thus we dont need quotes
+#"library" function ensure us that the download completed successfully
 
 #use data provided by the package 
-system.file #general function that is going to catch a name of file in R system
+system.file #general function that is going to catch a name of a file in R system
 #inside the package there is a folder and inside the folder "external" there's a file called species.shp
 
-system.file("external/species.shp", package="sdm")
+system.file("external/species.shp", package="sdm") #use parentesis
 file <- system.file("external/species.shp", package="sdm")
 ## vectors are series of coordinations. we're dealing with point in spaces thus with vectors.
+
+#HOW TO USE VECTOR FILE
 ##there's a function in terra to pass from the name to the vector
 #example
 rana <- vect(file)
 # you can see the structure of the file
-rana$Occurrence
 
-#the 0 can be a probem because is an uncertain data. but let's take the zero as a real absence
-
-##how to see the data
+##how to see the data in the environment
 plot(rana)
 plot(rana, cex=0.5) 
+
+# HOW TO LINK TWO ELEMENTS TOGETHER?
+# We use the $ symbol.
+rana$Occurrence
+# These codes are called PRESENCES and ABSENCES data
+#0 means absence, 1 means presence
+#the 0 can be a problem because is an uncertain data. but let's take the 0 as a real absence
 
 ##we want to select only presence from our data set
 #double equal means equal
 ## quadratic parentesis is used to select elements
-# 
-
+rana[rana$Occurrence == 1,]
+# In this manner we selected all the points in the plot that are equal to 1.
+#rename
 pres <- (rana[rana$Occurrence == 1,])
 pres
-#0 is absence, 1 is presence
+
 #exercise: select absence and call them abse
 
-abse$Occurrence
-abse <- (rana[ranaOccurrence == 0,])
+
+abse <- (rana[rana$Occurrence == 0,])
  #the coma close the query
-plot(abse)
+abse$Occurrence
+plot(abse, cex=2)
 
-#use par to see the two graphics in one row and two colons
-
+#"PAR" TO PLOT TOGETHERE
+#see the two graphs in one row and two colons
 #exercise plot presences and absences one beside the other
 
 par(mfrow=c(1,2))
-plot(pres)
-plot(abse)
+plot(pres, cex=1)
+plot(abse, cex=1)
 
-#everytime you have graph nulling use dev.off
+#everytime you need graph nulling use dev.off
 
 #exercise: plot abse and pres together with two different colors
-plot(pres, col="red")
-plot(abse, col="black")
+cl.pres <- colorRampPalette(c("yellow", "coral", "brown"))(3)
+cl.pres
+ 
+cl.abse <- colorRampPalette(c("blue", "aquamarine","navy", "lightgreen"))(4)
+#we use "col" inside function "par" to change the coors of the two plots
+#then we plot abs and pres together usig "plot" and "points"
 
+plot(pres, cex=1, col= cl.pres)
+points(abs, cex=1, col=cl.abse)
+
+#with just two colors
+plot(pres, cex=1, col="darkgreen")
+points(abse, cex=1, col="lightgreen")
+
+#UNDESTRAND THE GAPS IN SOME AREAS
 #predictors: environmental variables
 #elevation is the name of the file we import
 
