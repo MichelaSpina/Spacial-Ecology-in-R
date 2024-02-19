@@ -262,7 +262,7 @@ points(abse, cex=1, col="lightgreen")
 #predictors: environmental variables
 
 # HOW TO IMPORT AN IMAGE AS A FILE FROM OUTSIDE R?
-#using system.files function
+#using system.files function and selecting a file inside the folder 
 #elevation is the name of the file we import
 
 elev <- system.file("external/elevation.asc", package="sdm")
@@ -275,15 +275,15 @@ elev <- system.file("external/elevation.asc", package="sdm")
 
 elevmap <- rast(elev)
 #rast is a function from terra package
-plot(elev)
-
 elevmap
+
 plot(elevmap)
+#now we put on the elevation the points of the presence
 points(pres, cex=.5)
-#most individuals are distributed in the middle elevation
+#we obtained a map in which individuals are distributed more in an area than another
 
 #we can do the same with temperature
-#asc is like jpag
+
 temp <- system.file("external/temperature.asc", package="sdm")
 temp
 tempmap <- rast(temp)
@@ -293,7 +293,7 @@ plot(tempmap)
 points(pres, cex=.5)
 #places with very low temperature which we dont find rana temporaria
 
- #exercise do the same with vegetation with vegetation.asc
+ #exercise: do the same with vegetation with vegetation.asc
 vege <- system.file("external/vegetation.asc", package="sdm")
 vege
 vegemap <- rast(vege)
@@ -309,24 +309,22 @@ precipmap <- rast(precip)
 plot(precipmap)
 points(pres, cex=.5)
 
-#final multiframe
+#final multiframe: plot everything together
 par(mfrow=c(2,2))
-
 #elev
 plot <- (elevmap)
 points(pres, cex=.5)
 #temp
 plot(tempmap)
 points(pres, cex=.5)
-
 #vege
 plot(vegemap)
 points(pres, cex=.5)
-
 #precip
 plot(precipmap)
 points(pres, cex=.5)
 
+#lesson: 
 #how to use raster data, 
 #how to put points on raster data, 
 #multiframe and how to explain distribution of the population based on predictors
@@ -337,75 +335,81 @@ points(pres, cex=.5)
 
 
 ## multivariate analysis
-#vegan: vegetation analysis but can be applied also to animals
+#vegan: vegetation analysis, but can be applied also to animals
 #vegan package from Pierre Legendre , is a community ecology package
-#oridation methods is synonimous of mutivariate analysis
-
-#let's work in R with this package
+#Oridation methods is synonimous of mutivariate analysis
+# Overlap package is perfect to see how species are interacting during time.
 #the dataset is called "dune" : data()
+install.packages("overlap")
+library(overlap) 
+install.packages("vegan")
+library(vegan)
 
 data(dune)
 dune #we have the all data in the console
 #a matrix of several plots where in the colons we have all the species and several rows with the number of that species
-#another manner is concern with function that is called "head" that is going to show the first six rows
+#if we use the function "head", that is going to show us just the first six rows
 head(dune)
-#there's the function "tail" with which you can see the end of the matrix
+#with the function "tail" you can see the end of the matrix
 
 
-##
 #function decorana in the vegan package (detreded corresponence analysis) 
-#assig a name
-#function: detrended correspondence analysis
+#name it
 ord <- decorana(dune)
 #we can have summary of what happened
 ord
-#we have lot of numb and data. see the first two axis 
-#if we make a sum of al axis we can see the percentage of all the axis each
+#we have lot of number and data. See the first two axis 
+#if we make a sum of all axis we can see the percentage of all the axis each
 
+#axes lenght
 ldc1 = 3.7004
 ldc2 = 3.1166
 ldc3 = 1.30055
 ldc4 =  1.47888
+#calcuate the total
 total = ldc1 + ldc2 + ldc3 + ldc4
 
-#we wanna know the percentage of the rain
+#now the percentage
 pldc1 = ldc1 * 100 / total
 pldc2 = ldc2 * 100 / total
 plcd3 = ldc3 * 100 / total
 pldc4 = ldc4 * 100 / total
 
-pldc1 + pldc2
+#we stay focus just on the first two variables 
+#cumulative percentage
+pldc1 + pldc2 
+#71% of the whole vaiability
 
 #final plot
 plot (ord)
 #the names are the species thus we can see that there are species which love to stay each other
 #show the data in a graph help us to understand the correlation between species 
 #in graph we can see just two dimension
-
+# The multivariate space is defined by two axes, DCA1 and DCA2
 #species are also related in time
 #some of the time is overlapping
-#how much different species are overlapping ach other? 
-#so we can undertand better how to monitoring and conservate this species
+#how much different species are overlapping each other? 
+#so we can understand better how to monitoring and conservate this species
 
-#now we are going to use another package that is overlap
+#next lesson we are going to use another package that is overlap
 install.packages("overlap")
 #new file is coming
 
 #---------------------------------------------------------------------------
-#0.3.2 COMMUNITY OVERLAP
+#03.2 COMMUNITY OVERLAP
 #overlap in space and time
 
 
 #we're going to build a graph
-#we have installed 
 #in time we should use kernel density (amount of times we've seen that species)
-#kerinici seblat national park
-#inside library overlap thre is kerinci with different species and time e.i. a specie which lives a lot during the night nor the day
+#kerinici seblat national park in Indonesia
+#inside library overlap thre is kerinci with different species and time 
+#e.i. a specie which lives a lot during the night nor the day
 
 #data
 data(kerinci)
-head(kerinci) #and we can see the first six variable in xone, space and time
-the first six lines are related to the tiger
+head(kerinci) #and we can see the first six variable in zone, space and time
+#the first six lines are related to the tiger
 
 #summary
 summary(kerinci)
@@ -413,73 +417,107 @@ summary(kerinci)
 
 #moves of an animal in a day
 #tiger
-#put the name of the dataset kerinci and put the square parentesis
-#the coon containing the species should be equal to tiger
-#the dollr is linkink
+#we will use a language called Sps, using the [] which will collect info inside the data set
+#the dollar is linking
+tiger <- kerinci[kerinci$Sps=="tiger",]
+tiger #now i only have tiger in my dataset
+
+#one important step: the time we are using is linear but this package is working in circular time
+#we should pass from line to radiant (circular time)
+kerinci$time * 2 * pi
+
+timeRad <- kerinci$time * 2 * pi
+
+#HOW TO ASSIGN A CALCULATION TO A NEW OBJECT WHICH IS INSIDE THE DATA SET?
+#"Timerad" is the function and it will be the name of the new coloums
+#This will measure time in radiants
+kerinci$TimeRad <- kerinci$Time * 2 * pi
 tiger <- kerinci[kerinci$Sps=="tiger",]
 tiger
 
-#one important step: the time we are using is linear but this package is working not in linear but in circular time
-#we should pass from line to radiant (circular time)
-kerinci$time * 2 * pi
-#assing the calculation to an object
-timeRed <- kerinci$time * 2 * pi
+timetig <- tiger$Timerad
 
- #we can make plot to see what are the pix in time to see the tiger
-plot(tiger$timeRed)
-timetig <- tiger$timeRed
+#we can make plot to see what are the peaks in time to see the tiger
+plot(tiger$timeRad)
+timetig <- tiger$timeRad
 densityPlot(timetig, rug=TRUE)
 
 
 
 #let's do it with another species
-#exercise: select oonly, the data on the macaque individuals
-
+#exercise: select only, the data on the macaque individuals
+summary(kerinci)
 macaque <- kerinci[kerinci$Sps=="macaque",]
-#make variable in time with macaque
-timemac <- macaque$timeRed
-densityplot(timemac, rug =TRUE)
+macaque
+head(macaque)
+
+#now we will make a time variable with macaque
+timemac <- macaque$Timerad
+plot(macaque$Timerad)
+par(mfrow=c(1,2))
+densityPlot(timetig, rug=TRUE)
+densityPlot(timemac, rug=TRUE)
 
 #take data from tiger and macaque and see together
+#to see when they will be at the same time in the same place
 overlapPlot(timetig, timemac)
 
 #-----------------------------------------------------
-#next level: not organism anymore but ECOSYSTEM
-#monitor changes within communities with a tool which is called remote sensing data
+#monitor changes within communities with a tool which is called:
 
+#0.4 Remote Sensing Data
+# RSdata
 
-#0.4 remote sensing data
-
-# RS data
-
-library(devtools) # packages in R are also called libraries
-
+install.packages("devtools") # from CRAN (network with packages for R)
+library(devtools) 
+#Devtools is used to install packages directly from other repository, such as github
+# github is also a packages comprehensory,
 # install the imageRy package from GitHub
 install_github("ducciorocchini/imageRy")  # from devtools
 #with imagery we have another manner to install pacakges which are in github but not in CRAN
 #devtools is the package we need to have the possibility of installing packages from gitHiub
 #install_github(name of the github account and name of the package)
+devtools::install_github("ducciorocchini/imageRy", force=TRUE) #we install it from github, through devtools
+library(imageRy)
 
-# list the data
+install.packages("terra")
+library(terra)
+
+# list the data, im is the prefix for each function
 im.list()
 #
 
 b2 <- im.import("sentinel.dolomites.b2.tif") 
+b2
 
-cl <- colorRampPalette(c("black", "grey", "light grey")) (100)
-plot(b2, col=cl)
+# Overlapping= translation of a reference system in front of another.
+# HOW TO OVERLAP TWO ELEMENTS?
+# By using a six parameters transformation= translation in x,y,z and rotation in x,y,z.
 
+#let's change color of the b2
+cl2 <- colorRampPalette(c("black", "grey", "white")) (100)
+plot(b2, col=cl2)
+# The more the blue is reflected, the closer to the minimum value (black) 2000 we are
+
+#Exercise
 # import the green band from Sentinel-2 (band 3)
 b3 <- im.import("sentinel.dolomites.b3.tif") 
-plot(b3, col=cl)
+cl3 <- colorRampPalette(c("black", "grey", "white")) (100)
+plot(b3, col=cl3)
 
 # import the red band from Sentinel-2 (band 4)
 b4 <- im.import("sentinel.dolomites.b4.tif") 
-plot(b4, col=cl)
+cl4 <- colorRampPalette(c("black", "grey", "white")) (100)
+plot(b4, col=cl4)
+
 
 # import the NIR band from Sentinel-2 (band 8)
 b8 <- im.import("sentinel.dolomites.b8.tif") 
-plot(b8, col=cl)
+cl8 <- colorRampPalette(c("black", "grey", "white")) (100)
+plot(b8, col=cl8)
+
+#we plotted all the layers
+
 library(imageRy)
 
 
@@ -488,33 +526,76 @@ b3 <- im.import("sentinel.dolomites.b3.tif")
 b4 <- im.import("sentinel.dolomites.b4.tif") 
 b8 <- im.import("sentinel.dolomites.b8.tif") 
 
+# HOW TO STACK LAYERS OF IMAGE ALL TOGETHER INSIDE THE SAME OBJECT?  
+# We simply create a concatenation between our objects of interest and we name it
 stack_sent <- c(b2,b3,b4,b8)
+stack_sent
+
+dev.off()
+#plot the new project 
 plot(stack_sent)
 
-#to include infared im.plot()
-im.plotRGB(stack_sent, 3, 2, 1)
 
+# HOW TO PLOT ONLY ONE LAYER OF OUR STACK?
+# We use the function: (name.of.our.object [[number of the lyrs of interest]], col= )
+#(name.of.our.object [[number of the layers of interest]], col= )
+plot(stack_sent[[4]], col=cl2)
+
+#plot in multiframe 
+par(mfrow=c(2,2))
+
+cl2 <- colorRampPalette(c("darkblue", "cyan", "white")) (100)
+plot(b2, col=cl2) 
+cl3 <- colorRampPalette(c("darkgreen", "green", "white")) (100)
+plot(b3, col=cl3)   
+cl4 <- colorRampPalette(c("darkred", "red", "coral")) (100)
+plot(b4, col=cl4) 
+cl8 <- colorRampPalette(c("red", "orange", "yellow")) (100)
+plot(b8, col=cl8)
+
+
+# HOW DO WE PLOT THE THREE LAYERS ONE ON THE TOP OF THE OTHERS?
+# We use the function "im.plotRGB()", this allow R to create an image fully colored.
+# RGB space, it stays for RedGreenBlue
+im.plotRGB(stack_sent, 3, 2, 1)
 im.plotRGB(stack_sent, 4, 3, 2)
 
 
+
 pairs(stack_sent)
-## correlation coefficient on the right (from 0 to 1)
+# correlation coefficient on the right (from 0 to 1)
+#Pearson correlation coefficient
+#hyper correlation of 0.99 and 1.00
+#if you use the near infrared you can see that the correlation is still present but it is lower
+#with values netween 0.70 and 0.75
+#first and second band goes together
 #frequency level of reflectance 
+# WHAT IS REFLECTANCE?
+# it is a ratio between reflected radiant flux (energy) and the incident radiant flux (energy)
+# if the reflected energy is the same as the incident, you're reflecting all the possible energy
+# if the reflectance energy is zero, it means you're absorbing all the reflecting energy
 
 #--------------------------------------------------------
 #05 Spectral indicies
 
 
-#vegetation indicies
+#VEGETATION INDEX or DVI INDEX
+#index of vegetation's health
+#if plants are suffering, the index will increase, it decrease if they're not
 
- #spectral indicies temp
+
 library(imageRy)
 library(terra)
+install.packages("ggplot2")
+library(ggplot2)
+install.packages("viridis")
+library(viridis)
+
 
 #list 
 im.list()
-#information about description in repository imagery, go check
-#images from observatory of NASA
+#information about description in repository imagery, go on ducciorocchini repository
+#now we are going to use images from observatory of NASA (matogrosso)
 
 im.import #we have the plot of the image
 im.import("matogrosso_l5_1992219_lrg.jpg")
@@ -528,15 +609,13 @@ im.plotRGB(m1992, 1, 2, 3)
 im.plotRGB(m1992, r=3, g=1, b=3)
 im.plotRGB(m1992, r=2, g=3, b=1)
 
-#import the recent image of deforestation
+#import the recent image of deforestation from 2006
 m2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
 #see how different pixel changes in time
 im.plotRGB(m2006, r=2, g=3, b=1)
-#import the 2006 image
-m2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
-im.plotRGB(m2006, r=2, g=3, b=1)
 
-#build a multiframe (several plots all togethere in this case image 1992 and 2006)
+
+#build a multiframe (several plots all togethere in this case images 1992 and 2006)
 
 par(mfrow= c(1,2))
 im.plotRGB(m1992, r=2, g=3, b=1)
@@ -544,34 +623,28 @@ im.plotRGB(m2006, r=2, g=3, b=1)
 
 #let's create vegetation indicies to visualize the health of that place
 
- #digit the name the image and you have some infomation
+#digit the name the image and you have some infomation
 plot(m1992[[1]])
+plot(m2006[[1]])
+
 dev.off()
 #reflectance has a range from 0 to 250. reflectance is the ratio between incident flux and the reflected flux
 #usually the ratio is the opposite but the result would have been decimal, thus we want to avoid decimal we rescale the ratio
 #the code is binary. with 2bits we have 4 possible combination (information)
 #what with thee bits?? 8 informations
 #to know how possible informations we have we have to elevate 2 for the number of th bits.
-#most image are store in 8 bits cause it decease the rate of the image
+#most image are store in 8 bits cause it decrease the rate of the image
 # 2^8 is 256, so that's the reason why our eflectance range is 250. nasa use 8 bits.
 
-
-# 3
-# 1  3
-# 1 1 1 3
-# 3 1 1 3 
-# 1 3 2 1 1 3 
-# what is the next number??? xD
 
 # DVI
 # different between the first and the second bands (between NIR and RED)
 #bands 1=NIR 2=RED 3=GREEN
 
-dvi1992 = m1992[[1]] - m1992[[2]]]
-plotdvi(dv11992)
+dvi1992 = m1992[[1]] - m1992[[2]]
+plot(dvi1992)
 #for each pixel the difference between NIR and RED
 #green part is the healthy foest, all the rest is suffering forest 
-
 cl <- colorRampPalette(c("darkblue", "yellow", "red", "black")) (100)
 plot(dvi1992, col=cl)
 
@@ -593,8 +666,8 @@ plot(dvi2006, col=cl) #forest is really suffering D:<
 #Nir=0 Red=255 we make (0-255)/(0+255) = -1
 #dvi is rangengin depending on the bits we have, ndvi is always -1<ndvi<1
 
-#let's calculate di ndvi
-ndvi1992 = (m1992[[1]] - m1992[[2]]) / m(2006[[1]] + m1992[[2]])
+#let's calculate thje ndvi
+ndvi1992 = (m1992[[1]] - m1992[[2]]) / (m1992[[1]] + m1992[[2]])
 ndvi1992 = dvi1992 / (m1992[[1]] + m1992[[2]])
 plot(ndvi1992, col=cl)
 #in the im.ndvi NIR Band is the first, RED is the second
@@ -616,18 +689,21 @@ ndvi2006a <- im.ndvi(m2006, 1, 2)
 plot(ndvi2006a, col=cl)
 
 
-#for the next lecture: stay focus ahhahaha 
-
 #------------------------------------------------
-#06 time series
+#06 Time Series Data
 
 #time series analysis
-library(imageRy)
+install.packages("terra")
+library(terra)
+install.packages
+install.packages("devtools")
+library(devtools)
+devtools::install_github("ducciorocchini/imageRy", force=TRUE)
 library(terra)
 
+#We need to use the im-list function because we will import images
 im.list()
 #let's use the first one
-#import the data
 # "EN_01.png"
 im.import("EN_01.png")
 EN01 <- im.import("EN_01.png")
@@ -647,17 +723,16 @@ plot(diff)
 
 #palette
 cldif <- colorRampPalette(c("blue", "white", "red")) (100)
-plot(dif, col=cldif)
+plot(diff, col=cldif)
 #differences between the two images, everything with the blue is highe in march, in jenuary is red
+#This difference shows how, during COVID time, the NO concentration in atmosphere low down in all the European area 
+
+
 
 #now see how T changes from 2000 to 2015 in Greenland with an example
-
-
-#what are the data?
 im.list()
 #data on T, what is the amount  of T in that area
-#let's import
-
+#let's import images from Copernicus Global Land Service
 im.import("greenland.2000.tif")
 g2000 <- im.import("greenland.2000.tif")
 clg <- colorRampPalette(c("blue", "white", "red")) (100)
@@ -675,14 +750,15 @@ par(mfrow=c(1,2))
 plot(g2000, col=clg)
 plot(g2015, col=clg)
 
-#stack the images all together
+dev.off()
+##we can now concatenate them as a stack 
 stackg <- c(g2000, g2005, g2010, g2015)
 #plot the all stack
 plot(stackg, col=clg)
 #what we did is stack things all togeter and plot the stacks
 #in 2003 was one of the worst for the temperature so we can see this huge amount of decrease
-#exercise
-#make the differences between them (first and final)
+
+#exercise: make the differences between them (first and final)
 
 g2000 <- im.import("greenland.2000.tif")
 g2015 <- im.import("greenland.2015.tif")
@@ -703,29 +779,26 @@ plot(difg, col=cldif)
 #final image = red means high T in the first moment, blue means high T is the final period
 #exercise: make RGB plot in using different years
 #with im.plotRGB
-
-
 im.plotRGB(stackg, r=1, g=2, b=3)
 clg <- colorRampPalette(c("black", "blue", "white", "red")) (100)
-#in the middle the temperature in higher in the final period, if that center was red means that T was higher in the first period since we put red the first period
+#in the middle the temperature in higher in the final period, 
+#if that center is red means that T was higher in the first period since we put red the first period
 
 #------------------------------------------------------------------------------
 
 #07 External data code
 #set the working directory
 
+install.packages("terra")
+library(terra)
 
 #How can we download our own data and use it??
 
 # https://earthobservatory.nasa.gov/ <- what we're going to use today, less heavy.
-
 ## https://www.youtube.com/watch?v=KA2L4bDmo98 <- follow the video and download data (frome esa, 10m resolution)
 
 #We downloaded the image and put inside the folder:  https://eoimages.gsfc.nasa.gov/images/imagerecords/152000/152086/najafiraq_etm_2003140_lrg.jpg
 #let's upload the image inside R
-#using packages
-
-library(terra)
 
 #working directory. set the working directory with the function setwd()
 #explain to r what is te wd we're going to work with
@@ -750,13 +823,14 @@ plotRGB(najaeug, r=1, g=2, b=3)
 
 #multitemporal analysis change detection
 #important: put it in the same folder
+#et's make the difference between 2003 and 2023
 najadif= naja[[1]] - najaeug[[1]]
 cl <- colorRampPalette(c("brown", "grey", "orange")) (100)
 plot(najadif, col=cl)
 
 dev.off()
 
-#our own image
+#exercise: downoad our own images and show the differences in time
 Lakechad <- rast("lakechad_ms1_1973_lrg.JPG")
 plotRGB(Lakechad, r=1, g=2, b=3)
 plotRGB(Lakechad, r=2, g=3, b=1)
