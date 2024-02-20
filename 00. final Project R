@@ -18,4 +18,22 @@ par(mfrow=c(1,2))
 plot(Sic23)
 plot(Sic24)
 
+
+#calcolare dvi e ndvi
+par(mfrow=c(1,2))
+dviSic23 = Sic23[[1]] - Sic23[[2]]
+ndviSic23 = (Sic23[[1]] - Sic23[[2]]) / (Sic23[[1]] + Sic23[[2]])
+ndviSic23 = dviSic23 / (Sic23[[1]] + Sic23[[2]])
+ndviSic23 = dviSic23 / (Sic23[[1]] + Sic23[[2]])
+plot(dviSic23)
+cl <- colorRampPalette(c("darkblue", "yellow", "red", "black")) (100)
+plot(dviSic23, col=cl)
+
+ndviSic24 = (Sic24[[1]] - Sic24[[2]]) / (Sic24[[1]] + Sic24[[2]])
+dviSic24 = Sic24[[1]] - Sic24[[2]]
+ndviSic24 = dviSic24 / (Sic24[[1]] + Sic24[[2]])
+plot(dviSic24)
+plot(dviSic24, col=cl)
+
+
 #to be continued :')
