@@ -859,12 +859,14 @@ plotRGB(Lakechad2017, r=1, g=2, b=3)
 #metadata file there is the decription of the data
 #available quicklock not the real image but the outlook
 
+install.packages("ncdf4")
 library(ncdf4)
 #for reading the ncd files
 #we assumed to use another library, this allows us to read most of the data from copernicus and the extension
 library(terra)
 #needed for reporting data from outside
-#we should set the working directory
+# HOW TO CHANGE AND SET THE NEW WORKING DIRECTORY? 
+# By using the "setwd" function
 #setwd("")
 #important to know the path of our data
 #C:\Users\Utente\OneDrive - Università di Napoli Federico II\Desktop\SPATIAL ECOLOGY
@@ -889,112 +891,127 @@ ext <- c(20, 23, 55, 57) #minlog, maxlong, minlat, maxlat
 soilm2023c <- crop(soilm2023, ext) #new name  #code to produce the new object
 plot(soilm2023c[[1]], col=cl) #image in two dimension thus we use two sqare parentesis
 
-#i can download another iamge and then we can crop this image based on the previous extend so we will have two different images on the same extend
+#i can download another iamge and then we can crop this image based on the previous extend 
+#so we will have two different images on the same extend
 #big images require times to take data, crop images are easier to study
 #so we deal with "how to upload data inside R" 
-#next lecture on next thursday IMPORTANT we will quantificate the change in time of two different image
+
 
 #-------------------------------------------------------------------------
 
 #09 Classification of remote sensing data
 
-
 #lets classify satellite images from NASA
 
 library(terra)
 library(imageRy)
-
 im.list()
 
 sun <- im.import("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
+#we can classify the image with the function im.classify
+#we hav to set a number of clusters
 sunc <- im.classify(sun, num_clusters=3)
 plot(sunc)
+# White is the class with highest energy
+#sets for classification are randomly assigned everytime. this means images are always different
+
 
 #state the class with higher energy
 plot(sun) 
 #and see the correlation with 
 plot(sunc)
-
+# That's why my images are different from professor's ones. 
+# So how can I generally state the correct energy pattern?
+# We should apply this to the mato grosso forest to estimate the amount of change.
 #classify satellite data
 
 im.list()
 #"matogrosso_ast_2006209_lrg.jpg"             
 #"matogrosso_l5_1992219_lrg.jpg" 
-m1992 <- im.import("matogrosso_ast_2006209_lrg.jpg")
-m2006 <- im.import("matogrosso_l5_1992219_lrg.jpg")
+mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg"  )                  
+mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")  
 #difficult to discriminate
 #ggplot: allow us to add other graphs
-plotRGB(m1992)
 
 # c for classify
-m1992c <- im.classify(m1992, num_clusters=2)
-
+m1992c <- im.classify(mato1992, num_clusters= 2)
 plot(m1992c)
 #classes: forest=1; human=2
 
 ##we're going to classify the image from 2006
-m2006c <- im.classify(m2006c, num_clusters=2)
+m2006c <- im.classify(mato2006, num_clusters=2)
 plot(m2006c)
 
-#let's compare the images
-par(mfrow=c(1,2))
-plot(m1992c)
-plot(m2006c)
+dev.off()
 
-#i have now three images but i i install again the imagery package i could par the two images
-#we can par them in this way
+#let's plot the images together
 par(mfrow=c(1,2))
 plot(m1992c[[1]])
 plot(m2006c[[1]])
 
 
-#how many pixel
+#freq function is used to calcuate frequency of something
 f1992 <- freq(m1992c)
 f1992
-#     layer value   count
-#1     1     1 3262004
-#2     1     2 3937996
+
+#layer value   count
+#1     1     1  304437
+#2     1     2 1495563
+
+
+# Lets do the same with the 2006 to see the difference
+f2006 <- freq(m2006c)
+f2006
+
 #calculate the percentage dividing by the total num of pixels
 #extract the total num of the pixels
 
-> tot1992 <- ncell(m1992c)
-> tot1992
-[1] 7200000
+tot1992 <- ncell(m1992c)
+tot1992
+#1800000
+
+tot2006 <- ncell(m2006c)
+tot2006
+# 7200000
+ p2006 <- f2006* 100 / tot2006
+p2006
+#         layer        value    count
+# 1.388889e-05 1.388889e-05 45.30561
+# 1.388889e-05 2.777778e-05 54.69439
+# forest:45% human:54% 
+
 #percentage
 p1992 <- f1992 *100 / tot1992
- p1992
-         layer        value    count
-1 1.388889e-05 1.388889e-05 45.30561
-2 1.388889e-05 2.777778e-05 54.69439
-# forest:45% human:54% 
-#i have actually inverted the two images :'D so this percentage is from the 2006 image 
-#all the data are inverted xD
+p1992
+#     layer        value    count
+# 5.555556e-05 5.555556e-05 16.91317
+# 5.555556e-05 1.111111e-04 83.08683
+# forest:83% human:17%
 
-#building the final table
-class <- c("forest", "human)
-y1992 <- c(45, 54)
-#do it for real y2006 <- (45, 54) , in 1992 the percentage should be 83 and 17
-#this percentage are always from 2006 
-#fix at home
-
-tabout <- data.frame(class, y1992, y2006)
-tabout
-
-
-
-#finalgraph
-libray(ggplot)
+# Lets make a graph with the two of them together
+# We will create a dataframe first and build the final table
+# HOW TO CREATE A DATA FRAME?
+# By using the data.frame function
 class <- c("forest", "human")
-y1992 <- c(83, 17)
+y1992 <-  c(83, 17)
 y2006 <- c(45, 55)
-#we're going to plot the table
-p1 <- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identify", fill="white")
-#aes=aestethic
-#geometry can be related to any statistics but actually we are now using the real value
+mydf <- data.frame(class, y1992, y2006)
+mydf
 
+#final plot
+libray(ggplot)
+
+p1 <- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white")
+#aes=aestethic where x=class y= years
+#the color is related to the class 
+# geombar is because we'll use an histogram. It is normally related to stathistics, so you can use the function to calculate mean, median and so on
+# in our case we will only use the identity so the data that we've already imported in our d
+#geometry can be related to any statistics but actually we are now using the real value
 #rather than using contonuous data we put it in graph
 
-#vedi da duccio's github
+
+p2 <- ggplot(mydf, aes(x=class, y=y2006, color=class)) + geom_bar(stat="identity", fill="white")
+p2
 #see patchwork data imaginist.com 
 
 #------------------------------------------------------
@@ -1025,15 +1042,18 @@ sent <- im.import("sentinel.png")
 im.plotRGB(sent, r=1, g=2, b=3)
 im.plotRGB(sent, r=2, g=1, b=3)
 
+#we want to understand the variability using the standard deviation
 nir <- sent[[1]]
-plot(nir)
+plot(nir) #since we have 256 values we're working with bits
 
-# moving window
-# focal
+# moving window method
+#we calculate the standard deviation for a the central pixel of a few pixel with one moving window
+#and then we move to calculate the others sd. at the end the moving window will pass from one pixel to the others
 sd3 <- focal(nir, matrix(1/9, 3, 3), fun=sd)
 plot(sd3)
 #nir: objective menner to select the layer on which one we should calculate certain variability
-
+#let's change the legend by using the function called virsid
+#we use 7 colors
 viridisc <- colorRampPalette(viridis(7))(255)
 plot(sd3, col=viridisc)
 
@@ -1052,7 +1072,7 @@ plot(sd7, col=viridisc)
 
 #------------------------------------------------------------
 
-#11 Principal COmponent Analysis
+#11 Principal Component Analysis PCA
 
 
 
@@ -1083,6 +1103,9 @@ plot(pc1sd3, col=viridisc)
 pc1sd7 <- focal(pc1, matrix(1/49, 7, 7), fun=sd)
 plot(pc1sd7, col=viridisc)
 
+
+# we basically choose all the bands that we wanted to calculate
+# we plot all together
 par(mfrow=c(2,3))
 im.plotRGB(sent, 2, 1, 3)
 # sd from the variability script:
