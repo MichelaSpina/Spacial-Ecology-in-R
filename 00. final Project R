@@ -5,35 +5,30 @@
 library(imageRy)
 library(terra)
 library(viridis)
-library(raster)
 
+#impost directory
 getwd()
 setwd("C:/Users/Utente/OneDrive - Università di Napoli Federico II/Desktop/Final R project")
 
-Sic23 <- rast("2023-02-06-Sentinel-2.JPG")
-Sic24 <- rast("2024-02-06-_Sentinel-2_.JPG")
 
-#plot in multiframe the two images with the true colors
-par(mfrow=c(1,2))
-plot(Sic23)
-plot(Sic24)
-
-
-#calcolare dvi e ndvi
-par(mfrow=c(1,2))
-dviSic23 = Sic23[[1]] - Sic23[[2]]
-ndviSic23 = (Sic23[[1]] - Sic23[[2]]) / (Sic23[[1]] + Sic23[[2]])
-ndviSic23 = dviSic23 / (Sic23[[1]] + Sic23[[2]])
-ndviSic23 = dviSic23 / (Sic23[[1]] + Sic23[[2]])
-plot(dviSic23)
-cl <- colorRampPalette(c("darkblue", "yellow", "red", "black")) (100)
-plot(dviSic23, col=cl)
-
-ndviSic24 = (Sic24[[1]] - Sic24[[2]]) / (Sic24[[1]] + Sic24[[2]])
-dviSic24 = Sic24[[1]] - Sic24[[2]]
-ndviSic24 = dviSic24 / (Sic24[[1]] + Sic24[[2]])
-plot(dviSic24)
-plot(dviSic24, col=cl)
+#dvi
+#difference between bands
+#read the raster and assign a name
+b042023 <- rast("2023B04.TIFF")
+b082023 <- rast("2023B08.TIFF")
+#dvi and ndvi for 2023
+dvi23 <- b042023 - b082023
+dvi23
+plot(dvi23)
+ndvi2023 = (b042023 - b082023) / (b042023 + b082023)
+plot(ndvi2023)
 
 
-#to be continued :')
+#i do the same for 2024
+b042024 <- rast("2024B04.TIFF")
+b082024 <- rast("2024B08.TIFF")
+dvi24 <- b042024 - b082024
+dvi24
+plot(dvi24)
+ndvi2024 = (b042024 - b082024) / (b042024 + b082024)
+plot(ndvi2024)
