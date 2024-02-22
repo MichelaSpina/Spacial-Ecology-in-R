@@ -32,3 +32,5 @@ dvi24
 plot(dvi24)
 ndvi2024 = (b042024 - b082024) / (b042024 + b082024)
 plot(ndvi2024)
+
+#:( nope
