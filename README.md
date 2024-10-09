@@ -4,7 +4,7 @@
 Duccio Rocchini
 
 #student
-Michela Spina
+Michela Spina 🍉🍉🍉
 
 ## list of arguments
 + script on populations
@@ -15,4 +15,5 @@ Michela Spina
 > i am 26
 > i am graduated in Veteinary Medicine
 > i fight for climate and social justice
-
+> the whole course will be based on R
+> language used: R, MarkDown, Latex
