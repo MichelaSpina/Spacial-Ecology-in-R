@@ -1,7 +1,3 @@
-#the aim of the project is to compare two images of Sicily, 
-#respectively from February 2023 and February 2024, in terms of drought
-
-
 library(imageRy)
 library(terra)
 library(viridis)
@@ -9,28 +5,106 @@ library(viridis)
 #impost directory
 getwd()
 setwd("C:/Users/Utente/OneDrive - Università di Napoli Federico II/Desktop/Final R project")
+getwd()
+
+list.files()
+
+#importing images 23,24 in true color
+Sic23tc <- rast("2023-01-02-Sentinel-2_L2A_True_color.tiff")
+Sic24tc <- rast("2024-01-02-Sentinel-2_L2A_True_color.tiff")
+
+#verify that class is SpatRaster
+Sic23tc
+Sic24tc
 
 
-#dvi
-#difference between bands
-#read the raster and assign a name
-b042023 <- rast("2023B04.TIFF")
-b082023 <- rast("2023B08.TIFF")
-#dvi and ndvi for 2023
-dvi23 <- b042023 - b082023
-dvi23
-plot(dvi23)
-ndvi2023 = (b042023 - b082023) / (b042023 + b082023)
-plot(ndvi2023)
+#assign color palette
+cl <- colorRampPalette(c("red", "grey", "yellow")) (2000)
 
 
-#i do the same for 2024
-b042024 <- rast("2024B04.TIFF")
-b082024 <- rast("2024B08.TIFF")
-dvi24 <- b042024 - b082024
-dvi24
-plot(dvi24)
-ndvi2024 = (b042024 - b082024) / (b042024 + b082024)
-plot(ndvi2024)
+#plot true color 23-24
+par(mfrow=c(1,2))
+plot(Sic23tc)
+plot(Sic24tc)
 
-#:( nope
+
+#dvi 2023
+Sic23b04 <- rast("2023-01-02-Sentinel-2_L2A_B04_(Raw).tiff")
+Sic23b08 <- rast("2023-01-02-Sentinel-2_L2A_B08_(Raw).tiff")
+
+DVI_2023 <- Sic23b04 - Sic23b08
+DVI_2023
+
+dev.off()
+
+plot(DVI_2023)
+
+#dvi 2024
+Sic24b04 <- rast("2024-01-02-Sentinel-2_L2A_B04_(Raw).tiff")
+Sic24b08 <- rast("2024-01-02-Sentinel-2_L2A_B08_(Raw).tiff")
+
+DVI_2024 <- Sic24b04 - Sic24b08
+DVI_2024
+
+dev.off()
+
+plot(DVI_2024)
+
+# Definire un'estensione specifica (cambia queste coordinate per la tua AOI)
+ext <- ext(c(xmin = 14, xmax = 15, ymin = 37.4, ymax = 37.8))
+
+#zoomed DVI using crop function
+DVI_2023ext <- crop(Sic23b04 - Sic23b08, ext)
+DVI_2024ext <- crop(Sic24b04 - Sic24b08, ext)
+
+
+
+#plot DVI  2023  2024
+dev.off()
+par(mfrow=c(1,2))
+plot(DVI_2023ext, main="DVI 2023", col=cl)
+plot(DVI_2024ext, main="DVI 2024", col=cl)
+
+
+
+
+#difference between DVI 2023 and 2024
+dev.off()
+DVI_diff <- DVI_2024ext - DVI_2023ext
+plot(DVI_diff, main="Variazione DVI (2024-2023)", col=cl)
+
+#descriptive statistics
+summary(DVI_2023ext)
+summary(DVI_2024ext)
+summary(DVI_diff)
+
+
+
+#NDVI 2023 and 2024
+dev.off()
+ndvi2023 = crop((Sic23b08 - Sic23b04) / (Sic23b04 + Sic23b08), ext)
+ndvi2024 = crop((Sic24b08 - Sic24b04) / (Sic24b04 + Sic24b08), ext)
+par(mfrow=c(1,2))
+plot(ndvi2023, main="NDVI 2023", col=cl)
+plot(ndvi2024, main="NDVI 2024", col=cl)
+
+#NDVI difference
+dev.off()
+ndvi_diff <- ndvi2024 - ndvi2023
+plot(ndvi_diff)
+
+#Visualizza tre immagini in una riga
+dev.off()
+par(mfrow=c(1,3)) 
+
+plot(ndvi2023, main="NDVI 2023", col=cl)
+plot(ndvi2024, main="NDVI 2024", col=cl)
+plot(ndvi_diff, main="Differenza NDVI 2024 - 2023", col=cl)
+
+#descriptive statistics
+summary(ndvi2023)
+summary(ndvi2024)
+summary(ndvi_diff)
+
+
+
