@@ -1,4 +1,4 @@
-# SPACIAL ECOLOGY IN R 2023 💻
+# SPATIAL ECOLOGY IN R 2023 💻
 
 #Professor 👨‍🔬
 Duccio Rocchini
