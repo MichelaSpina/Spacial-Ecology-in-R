@@ -35,6 +35,7 @@ Sic23b08 <- rast("2023-01-02-Sentinel-2_L2A_B08_27(Raw).tiff")
 DVI_2023 <- Sic23b04 - Sic23b08
 DVI_2023
 
+
 dev.off()
 
 par(mfrow=c(1,2))
@@ -48,21 +49,27 @@ Sic24b08 <- rast("2024-01-02-Sentinel-2_L2A_B08_27(Raw).tiff")
 DVI_2024 <- Sic24b04 - Sic24b08
 DVI_2024
 
-
-
 plot(DVI_2024)
 
-# Definire un'estensione specifica (cambia queste coordinate per la tua AOI)
+
+#summary DVI 
+summary(DVI_2023)
+summary(DVI_2024)
+
+
+
+# define specific extention 
 ext <- ext(c(xmin = 14, xmax = 15, ymin = 37.4, ymax = 37.8))
 
 #zoomed DVI using crop function
 DVI_2023ext <- crop(Sic23b04 - Sic23b08, ext)
 DVI_2024ext <- crop(Sic24b04 - Sic24b08, ext)
 
+#descriptive statistics: summary DVI ext
 summary(DVI_2023ext)
 summary(DVI_2024ext)
 
-#plot DVI  2023  2024
+#plot DVI ext 2023  2024
 dev.off()
 par(mfrow=c(1,2))
 plot(DVI_2023ext, main="DVI 2023", col=cl)
@@ -70,15 +77,21 @@ plot(DVI_2024ext, main="DVI 2024", col=cl)
 
 
 
-#difference between DVI 2023 and 2024
+#difference between DVI ext 2023 and 2024 and summary
 dev.off()
 DVI_diff <- DVI_2024ext - DVI_2023ext
 plot(DVI_diff, main="Variazione DVI (2024-2023)", col=cl)
-
-#descriptive statistics
-summary(DVI_2023ext)
-summary(DVI_2024ext)
 summary(DVI_diff)
+
+#histogram
+histoDVI23 <- hist(DVI_2023ext, main="Istogramma DVI 2023", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
+histoDVI24 <- hist(DVI_2024ext, main="Istogramma DVI 2023", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
+dev.off()
+par(mfrow=c(1,2))
+plot(histoDVI23, main="DVI 2023", col=cl)
+plot(histoDVI24, main="DVI 2024", col=cl)
+histoDVI23
+histoDVI24
 
 
 
@@ -95,7 +108,7 @@ dev.off()
 ndvi_diff <- ndvi2024 - ndvi2023
 plot(ndvi_diff, main="VARIAZIONE NDVI (2023-2024)", col=cl)
 
-#plot the three images in one line
+#visualize 3 images in a row
 dev.off()
 par(mfrow=c(1,3)) 
 
@@ -108,26 +121,47 @@ summary(ndvi2023)
 summary(ndvi2024)
 summary(ndvi_diff)
 
-#assign band 03
+#banda verde
 Sic23b03 <- rast("2023-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 Sic24b03 <- rast("2024-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 
-#NDWI
+#calcolo NDWI
 NDWI_2023 <- (Sic23b08 - Sic23b03) / (Sic23b08 + Sic23b03)
 NDWI_2024 <- (Sic24b08 - Sic24b03) / (Sic24b08 + Sic24b03)
 
+#extended version
+NDWI_2023ext <- crop((Sic23b08 - Sic23b03) / (Sic23b08 + Sic23b03),ext)
+NDWI_2024ext <- crop((Sic24b08 - Sic24b03) / (Sic24b08 + Sic24b03), ext)
+
 NDWI_2023
 NDWI_2024
+NDWI_2023ext
+NDWI_2024ext 
+
 dev.off()
 par(mfrow=c(1,2))
 
 plot(NDWI_2023, main="NDWI 2023", col=cl)
-plot(NDWI_2024, main="NDWI 2023", col=cl)
+plot(NDWI_2024, main="NDWI 2024", col=cl)
 
-#difference in NDWI between 2023 band 2024
 NDWI_diff <- NDWI_2024 - NDWI_2023
+
+#NDWI extended version
+dev.off()
+
+par(mfrow=c(1,2))
+plot(NDWI_2023ext, main="NDWI 2023", col=cl)
+plot(NDWI_2024ext, main="NDWI 2024", col=cl)
 
 dev.off()
 
 plot(NDWI_diff, main="Differenza NDWI 2024 - 2023", col=cl)
+
+#descriptive statistics
+summary(NDWI_2023)
+summary(NDWI_2024)
 summary(NDWI_diff)
+
+summary(NDWI_2023ext)
+summary(NDWI_2024ext)
+
