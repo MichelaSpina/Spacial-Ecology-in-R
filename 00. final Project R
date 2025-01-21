@@ -153,7 +153,7 @@ par(mfrow=c(1,2))
 plot(NDWI_2023, main="NDWI 2023", col=cl)
 plot(NDWI_2024, main="NDWI 2024", col=cl)
 
-NDWI_diff <- NDWI_2024ext - NDWI_2023ext
+NDWI_diff_ext <- NDWI_2024ext - NDWI_2023ext
 
 #NDWI extended version
 dev.off()
@@ -169,7 +169,7 @@ plot(NDWI_diff, main="Differenza NDWI 2024 - 2023", col=cl)
 #descriptive statistics
 summary(NDWI_2023)
 summary(NDWI_2024)
-summary(NDWI_diff)
 
 summary(NDWI_2023ext)
 summary(NDWI_2024ext)
+summary(NDWI_diff_ext)
