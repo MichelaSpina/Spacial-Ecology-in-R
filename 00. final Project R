@@ -59,7 +59,7 @@ summary(DVI_2024)
 
 
 
-# define specific extention 
+# define specific extention in order to not include some clouds at the edges
 ext <- ext(c(xmin = 14, xmax = 15, ymin = 37.4, ymax = 37.8))
 
 #zoomed DVI using crop function
@@ -91,7 +91,7 @@ DVI_diff <- DVI_2024ext_clamped - DVI_2023ext
 plot(DVI_diff, main="Variazione DVI (2024-2023)", col=cl)
 summary(DVI_diff)
 
-#histogram
+#histogram to have a quantitative panoramic about the dispersion of data o understand the variability of our data
 histoDVI23 <- hist(DVI_2023ext, main="Istogramma DVI 2023", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
 histoDVI24 <- hist(DVI_2024ext, main="Istogramma DVI 2023", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
 dev.off()
@@ -130,11 +130,11 @@ summary(ndvi2023)
 summary(ndvi2024)
 summary(ndvi_diff_clamped)
 
-#banda verde
+#green band
 Sic23b03 <- rast("2023-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 Sic24b03 <- rast("2024-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 
-#calcolo NDWI
+#NDWI
 NDWI_2023 <- (Sic23b08 - Sic23b03) / (Sic23b08 + Sic23b03)
 NDWI_2024 <- (Sic24b08 - Sic24b03) / (Sic24b08 + Sic24b03)
 
