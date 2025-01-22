@@ -29,7 +29,7 @@ plot(Sic23tc)
 plot(Sic24tc)
 
 
-#dvi 2023
+#DIFFERENTIAL VEGETATION INDEX 2023
 Sic23b04 <- rast("2023-01-02-Sentinel-2_L2A_B04_27(Raw).tiff")
 Sic23b08 <- rast("2023-01-02-Sentinel-2_L2A_B08_27(Raw).tiff")
 
@@ -43,7 +43,7 @@ par(mfrow=c(1,2))
 
 plot(DVI_2023)
 
-#dvi 2024
+#DIFFERENTIAL VEGETATION INDEX 2024
 Sic24b04 <- rast("2024-01-02-Sentinel-2_L2A_B04_27(Raw).tiff")
 Sic24b08 <- rast("2024-01-02-Sentinel-2_L2A_B08_27(Raw).tiff")
 
@@ -103,7 +103,7 @@ histoDVI24
 
 
 
-#NDVI 2023 and 2024
+#NORMALIZED DIFFERENT VEGETATION INDEX 2023 and 2024
 dev.off()
 ndvi2023 = crop((Sic23b08 - Sic23b04) / (Sic23b04 + Sic23b08), ext)
 ndvi2024 = crop((Sic24b08 - Sic24b04) / (Sic24b04 + Sic24b08), ext)
@@ -134,7 +134,7 @@ summary(ndvi_diff_clamped)
 Sic23b03 <- rast("2023-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 Sic24b03 <- rast("2024-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 
-#NDWI
+#NORMALIZED WATER INDEX (NDWI)
 NDWI_2023 <- (Sic23b08 - Sic23b03) / (Sic23b08 + Sic23b03)
 NDWI_2024 <- (Sic24b08 - Sic24b03) / (Sic24b08 + Sic24b03)
 
@@ -173,3 +173,24 @@ summary(NDWI_2024)
 summary(NDWI_2023ext)
 summary(NDWI_2024ext)
 summary(NDWI_diff_ext)
+
+
+#ENHANCED VEGETATION INDEX
+EVI_2023 <- crop(2.5 * (Sic23b08 - Sic23b04) / (Sic23b08 + 6 * Sic23b04 - 7.5 * Sic23b03 + 100),ext)
+EVI_2024 <- crop(2.5 * (Sic24b08 - Sic24b04) / (Sic24b08 + 6 * Sic24b04 - 7.5 * Sic24b03 + 100),ext)
+
+#clamp intervals
+EVI_2023cl <- clamp(EVI_2023,lower=-1, upper=1)
+EVI_2024cl <- clamp(EVI_2024,lower=-1, upper=1)
+
+#plot EVI
+dev.off()
+par(mfrow=c(1,2))
+
+plot(EVI_2023cl,main="EVI 2023",col=cl)
+plot(EVI_2024cl,main="EVI 2024",col=cl)
+
+#descriptive statistics
+summary(EVI_2023cl)
+summary(EVI_2024cl)
+
