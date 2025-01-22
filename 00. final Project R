@@ -71,8 +71,8 @@ DVI_2024ext_clamped <- clamp(DVI_2024ext, lower = -150, upper = 150)
 DVI_2023ext_clamped <- clamp(DVI_2023ext, lower = -150, upper = 150)
 
 #descriptive statistics: summary DVI ext
-summary(DVI_2023ext)
-summary(DVI_2024ext)
+summary(DVI_2023ext_clamped)
+summary(DVI_2024ext_clamped)
 
 DVI_2023ext
 DVI_2024ext
@@ -138,7 +138,7 @@ Sic24b03 <- rast("2024-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 NDWI_2023 <- (Sic23b03 - Sic23b08) / (Sic23b08 + Sic23b03)
 NDWI_2024 <- (Sic24b03 - Sic24b08) / (Sic24b08 + Sic24b03)
 
-##NDWI extended version
+#NDWI extended version
 NDWI_2023ext <- crop((Sic23b03 - Sic23b08) / (Sic23b08 + Sic23b03),ext)
 NDWI_2024ext <- crop((Sic24b03 - Sic24b08) / (Sic24b08 + Sic24b03),ext)
 
