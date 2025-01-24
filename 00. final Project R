@@ -7,7 +7,6 @@ library(raster)
 getwd()
 setwd("C:/Users/Utente/OneDrive - Università di Napoli Federico II/Desktop/Final R project/provo bande 3,4,8")
 getwd()
-
 list.files()
 
 #importing images 23,24 in true color
@@ -18,46 +17,39 @@ Sic24tc <- rast("2024-01-02-Sentinel-2_L2A_27True_color.tiff")
 Sic23tc
 Sic24tc
 
-
-#assign color palette
+#assign color palette (magma is a palette for colorblind)
 cl <- magma(100)
-
 
 #plot true color 23-24
 par(mfrow=c(1,2))
 plot(Sic23tc)
 plot(Sic24tc)
 
-
 #DIFFERENTIAL VEGETATION INDEX 2023
+#DVI= RED - NIR
 Sic23b04 <- rast("2023-B04_(Raw).tiff")
 Sic23b08 <- rast("2023_B08_(Raw).tiff")
-
-DVI_2023 <- Sic23b04 - Sic23b08
+DVI_2023 <- Sic23b04 - Sic23b08  
 DVI_2023
+dev.off() #for cleaning the plot
+par(mfrow=c(1,2)) # two plot in one row
 
-
-dev.off()
-
-par(mfrow=c(1,2))
-
+#plot DVI 2023
 plot(DVI_2023, col=cl, main="DVI 2023")
 
 #DIFFERENTIAL VEGETATION INDEX 2024
+#DVI= RED - NIR
 Sic24b04 <- rast("2024-B04_(Raw).tiff")
 Sic24b08 <- rast("2024-B08_(Raw).tiff")
-
-DVI_2024 <- Sic24b04 - Sic24b08
+DVI_2024 <- Sic24b04 - Sic24b08 #formula
 DVI_2024
 
+#plot DVI 2024
 plot(DVI_2024, col=cl, main="DVI 2024")
 
-
-#summary DVI 
+#descriptive statistics:summary DVI 
 summary(DVI_2023)
 summary(DVI_2024)
-
-
 
 # define specific extention in order to not include some clouds at the edges
 ext <- ext(c(xmin = 14, xmax = 15, ymin = 37.4, ymax = 37.8))
@@ -74,9 +66,9 @@ DVI_2023ext_clamped <- clamp(DVI_2023ext, lower = -150, upper = 150)
 summary(DVI_2023ext_clamped)
 summary(DVI_2024ext_clamped)
 
+#Reading the if the class is SpatRaster
 DVI_2023ext
 DVI_2024ext
-
 
 #plot DVI ext 2023  2024
 dev.off()
@@ -84,17 +76,14 @@ par(mfrow=c(1,2))
 plot(DVI_2023ext_clamped, main="DVI ext 2023", col=cl)
 plot(DVI_2024ext_clamped, main="DVI ext 2024", col=cl)
 
-
-
 #difference between DVI ext 2023 and 2024 and summary
 dev.off()
 DVI_diff <- DVI_2024ext_clamped - DVI_2023ext_clamped
 plot(DVI_diff, main="Variazione DVI (2024-2023)", col=cl)
 summary(DVI_diff)
 
-
-
 #NORMALIZED DIFFERENT VEGETATION INDEX 2023 and 2024
+#NDVI= NIR - RED / NIR + RED
 dev.off()
 ndvi2023 = crop((Sic23b08 - Sic23b04) / (Sic23b04 + Sic23b08), ext)
 ndvi2024 = crop((Sic24b08 - Sic24b04) / (Sic24b04 + Sic24b08), ext)
@@ -111,7 +100,6 @@ plot(ndvi_diff_clamped, main="VARIAZIONE NDVI (2023-2024)", col=cl)
 #visualize 3 images in a row
 dev.off()
 par(mfrow=c(1,3)) 
-
 plot(ndvi2023, main="NDVI 2023", col=cl)
 plot(ndvi2024, main="NDVI 2024", col=cl)
 plot(ndvi_diff_clamped, main="Differenza NDVI 2024 - 2023", col=cl)
@@ -130,33 +118,25 @@ NDWI_2024 <- (Sic24b03 - Sic24b08) / (Sic24b08 + Sic24b03)
 #NDWI extended version
 NDWI_2023ext <- crop((Sic23b03 - Sic23b08) / (Sic23b08 + Sic23b03),ext)
 NDWI_2024ext <- crop((Sic24b03 - Sic24b08) / (Sic24b08 + Sic24b03),ext)
-
 NDWI_2023
 NDWI_2024
 NDWI_2023ext
 NDWI_2024ext 
-
 dev.off()
 par(mfrow=c(1,2))
 plot(NDWI_2023, main="NDWI 2023", col=cl)
 plot(NDWI_2024, main="NDWI 2024", col=cl)
-
 NDWI_diff_ext <- NDWI_2024ext - NDWI_2023ext
-
 dev.off()
-
 par(mfrow=c(1,2))
 plot(NDWI_2023ext, main="NDWI 2023", col=cl)
 plot(NDWI_2024ext, main="NDWI 2024", col=cl)
-
 dev.off()
-
 plot(NDWI_diff, main="Differenza NDWI 2024 - 2023", col=cl)
 
 #descriptive statistics
 summary(NDWI_2023)
 summary(NDWI_2024)
-
 summary(NDWI_2023ext)
 summary(NDWI_2024ext)
 summary(NDWI_diff_ext)
@@ -177,7 +157,6 @@ EVI_2024cl <- clamp(EVI_2024,lower=-1, upper=1)
 #plot EVI
 dev.off()
 par(mfrow=c(1,2))
-
 plot(EVI_2023cl,main="EVI 2023",col=cl)
 plot(EVI_2024cl,main="EVI 2024",col=cl)
 
