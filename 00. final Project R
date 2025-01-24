@@ -41,7 +41,7 @@ dev.off()
 
 par(mfrow=c(1,2))
 
-plot(DVI_2023)
+plot(DVI_2023, col=cl, main="DVI 2023")
 
 #DIFFERENTIAL VEGETATION INDEX 2024
 Sic24b04 <- rast("2024-B04_(Raw).tiff")
@@ -50,7 +50,7 @@ Sic24b08 <- rast("2024-B08_(Raw).tiff")
 DVI_2024 <- Sic24b04 - Sic24b08
 DVI_2024
 
-plot(DVI_2024)
+plot(DVI_2024, col=cl, main="DVI 2024")
 
 
 #summary DVI 
@@ -81,8 +81,8 @@ DVI_2024ext
 #plot DVI ext 2023  2024
 dev.off()
 par(mfrow=c(1,2))
-plot(DVI_2023ext_clamped, main="DVI 2023", col=cl)
-plot(DVI_2024ext_clamped, main="DVI 2024", col=cl)
+plot(DVI_2023ext_clamped, main="DVI ext 2023", col=cl)
+plot(DVI_2024ext_clamped, main="DVI ext 2024", col=cl)
 
 
 
@@ -92,15 +92,6 @@ DVI_diff <- DVI_2024ext_clamped - DVI_2023ext_clamped
 plot(DVI_diff, main="Variazione DVI (2024-2023)", col=cl)
 summary(DVI_diff)
 
-#histogram to have a quantitative panoramic about the dispersion of data o understand the variability of our data
-dev.off()
-par(mfrow=c(1,2))
-
-histoDVI23 <- hist(DVI_2023ext_clamped, main="Istogramma DVI 2023", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
-histoDVI24 <- hist(DVI_2024ext_clamped, main="Istogramma DVI 2024", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
-
-histoDVI23
-histoDVI24
 
 
 #NORMALIZED DIFFERENT VEGETATION INDEX 2023 and 2024
@@ -131,11 +122,8 @@ summary(ndvi2024)
 summary(ndvi_diff_clamped)
 
 #green band (B03)
-Sic23b03 <- rast("2023-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
-Sic24b03 <- rast("2024-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
-
-
-#NORMALIZED WATER INDEX (NDWI)
+Sic23b03 <- rast("2023-B03_(Raw).tiff")
+Sic24b03 <- rast("2024-_B03_(Raw).tiff")#NORMALIZED WATER INDEX (NDWI)
 NDWI_2023 <- (Sic23b03 - Sic23b08) / (Sic23b08 + Sic23b03)
 NDWI_2024 <- (Sic24b03 - Sic24b08) / (Sic24b08 + Sic24b03)
 
@@ -196,3 +184,4 @@ plot(EVI_2024cl,main="EVI 2024",col=cl)
 #descriptive statistics
 summary(EVI_2023cl)
 summary(EVI_2024cl)
+
