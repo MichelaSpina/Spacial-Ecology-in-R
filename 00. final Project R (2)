@@ -1,0 +1,112 @@
+#impost working directory and changing slashes
+setwd("C:/Users/Utente/OneDrive - Università di Napoli Federico II/Desktop/Final R project")
+getwd()
+list.files() 
+
+#read packages with function library
+library(imageRy) #vidualize raster images
+library(terra) #work with raster and spatial data and manipulate satellite images
+library(viridis) #works for colorblind people
+library(ggplot2) #to analyze graphics
+library(stats)
+
+#assign a name to a file raster
+#images are taken from Sentinel-2 mission 
+#image from 2023 is from 2nd of Jenuary
+#image from 2024 is from 27th of Jenuary
+Sic23 <- rast("2023-01-02-00_00_2023-01-02-23_59_Sentinel-2_L2A_True_color.tiff")
+Sic24 <- rast("2024-01-27-00_00_2024-01-27-23_59_Sentinel-2_L2A_True_color.tiff")
+
+#R (RED)  use Band 4.
+#G (GREEN)  use Band 3.
+#B (BLU)  use Band 2.
+#check the class and the Bands
+Sic23
+Sic24
+
+#extracting bands from true color image for 2023
+REDband23 <- Sic23[[1]]  # First band
+GREENband23 <- Sic23[[2]]  # Second band 
+BLUEband23 <- Sic23[[3]]  # Third band 
+#extracting bands from true color image for 2024
+REDband24 <- Sic24[[1]]  # First band 
+GREENband24 <- Sic24[[2]]  # Second band
+BLUEband24 <- Sic24[[3]]  # Third band
+#extract NIR band which is band 8 in Sentinel-2 raster
+NIRband23 <- rast("2023-01-02-00_00_2023-01-02-23_59_Sentinel-2_L2A_B08_(Raw).tiff")
+NIRband24 <- rast("2024-01-27-00_00_2024-01-27-23_59_Sentinel-2_L2A_B08_(Raw).tiff")
+
+#assign color palette for colorblind people
+cl <- magma(100)
+
+#plot true color 23-24
+par(mfrow=c(1,2)) #to put two plots in one row and two columns
+plot(Sic23)
+plot(Sic24)
+
+#define specific extention in order to not include clouds and sea at the edges reducing missing values
+ext <- ext(c(xmin = 14, xmax = 15, ymin = 37.4, ymax = 37.8))
+Sic23ext <- crop(Sic23,ext)
+Sic24ext <- crop(Sic24,ext)
+
+#NORMALIZED DIFFERENT VEGETATION INDEX (NDVI) 2023
+#(NIR-RED)/(NIR+RED)
+dev.off() #for cleaning the plots
+par(mfrow=c(1,2)) #to put two plots in one row and two columns
+NDVI23 <- crop((NIRband23-REDband23)/(NIRband23+REDband23),ext)
+plot(NDVI23, main="NDVI_2023", col=cl)
+#NORMALIZED DIFFERENT VEGETATION INDEX (NDVI) 2024
+#(NIR-RED)/(NIR+RED)
+NDVI24 <- crop(NIRband24-REDband24)/(NIRband24+REDband24),ext)
+plot(NDVI24, main="NDVI_2024", col=cl)
+#check summary to see the differences
+summary(NDVI23)
+summary(NDVI24)
+# difference of NDVI between 2024 and 2023
+dev.off()
+NDVI_diff <- NDVI24 - NDVI23
+plot(NDVI_diff, main = "Difference NDVI (2024 - 2023)", col=cl)
+summary(NDVI_diff)
+
+#NORMALIZED WATER INDEX (NDWI)
+#(GEEN−NIR)/(GREEN+NIR)
+#For Sentinel 2 data: NDWI= (Band 3 – Band 8)/(Band 3 + Band 8)
+NDWI23 <- crop((GREENband23-NIRband23)/(GREENband23+NIRband23),ext)
+NDWI24 <- crop((GREENband24-NIRband24)/(GREENband24+NIRband24),ext)
+#plotting ndwi of the two year in one row and two columns
+dev.off() #for cleaning the plot
+par(mfrow=c(1,2))
+plot(NDWI23, main="NDWI_2023", col=cl)
+plot(NDWI24, main="NDWI_2024", col=cl)
+#check summary to see the differences
+summary(NDWI23)
+summary(NDWI24)
+#difference of NDWI between 2023 and 2024
+dev.off()
+NDWI_diff <- NDWI24 - NDWI23
+plot(NDWI_diff, main = "Difference NDWI (2024 - 2023)", col=cl)
+summary(NDWI_diff)
+
+#ENHANCED WATER DIFFERENCE (EVI)
+# 2.5 * (NIR - RED) / ((NIR + 6*RED - 7.5*BLUE) + 1)
+dev.off()
+EVI23 <- crop(2.5 * (NIRband23 - REDband23) / ((NIRband23 + 6 * REDband23 - 7.5 * BLUEband23) + 1),ext)
+EVI24 <- crop(2.5 * (NIRband24 - REDband24) / ((NIRband24 + 6 * REDband24 - 7.5 * BLUEband24) + 1),ext)
+#clamp results in order to remove the extreme outliers, correcting visual distortions
+#and ensure they fall within the expected range (-1 to 1 for EVI).
+#clamp in a function inside terra package
+EVI23cl <- clamp(EVI23,lower=-1, upper=1)
+EVI24cl <- clamp(EVI24,lower=-1, upper=1)
+#plot EVI
+par(mfrow=c(1,2))
+plot(EVI23cl, main="EVI_2023", col=cl)
+plot(EVI24cl, main="EVI_2024", col=cl)
+#summary
+summary(EVI23cl)
+summary(EVI24cl)
+#difference of EVI between 2023 and 2024
+dev.off()
+EVI_diff <- EVI24cl - EVI23cl
+plot(EVI_diff, main = "Difference EVI (2024 - 2023)", col=cl)
+summary(EVI_diff)
+
