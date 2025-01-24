@@ -30,8 +30,8 @@ plot(Sic24tc)
 
 
 #DIFFERENTIAL VEGETATION INDEX 2023
-Sic23b04 <- rast("2023-01-02-Sentinel-2_L2A_B04_27(Raw).tiff")
-Sic23b08 <- rast("2023-01-02-Sentinel-2_L2A_B08_27(Raw).tiff")
+Sic23b04 <- rast("2023-B04_(Raw).tiff")
+Sic23b08 <- rast("2023_B08_(Raw).tiff")
 
 DVI_2023 <- Sic23b04 - Sic23b08
 DVI_2023
@@ -44,8 +44,8 @@ par(mfrow=c(1,2))
 plot(DVI_2023)
 
 #DIFFERENTIAL VEGETATION INDEX 2024
-Sic24b04 <- rast("2024-01-02-Sentinel-2_L2A_B04_27(Raw).tiff")
-Sic24b08 <- rast("2024-01-02-Sentinel-2_L2A_B08_27(Raw).tiff")
+Sic24b04 <- rast("2024-B04_(Raw).tiff")
+Sic24b08 <- rast("2024-B08_(Raw).tiff")
 
 DVI_2024 <- Sic24b04 - Sic24b08
 DVI_2024
@@ -92,6 +92,16 @@ DVI_diff <- DVI_2024ext_clamped - DVI_2023ext_clamped
 plot(DVI_diff, main="Variazione DVI (2024-2023)", col=cl)
 summary(DVI_diff)
 
+#histogram to have a quantitative panoramic about the dispersion of data o understand the variability of our data
+dev.off()
+par(mfrow=c(1,2))
+
+histoDVI23 <- hist(DVI_2023ext_clamped, main="Istogramma DVI 2023", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
+histoDVI24 <- hist(DVI_2024ext_clamped, main="Istogramma DVI 2024", xlab="Valore DVI", ylab="Frequenza", col="lightblue", border="black")
+
+histoDVI23
+histoDVI24
+
 
 #NORMALIZED DIFFERENT VEGETATION INDEX 2023 and 2024
 dev.off()
@@ -124,6 +134,7 @@ summary(ndvi_diff_clamped)
 Sic23b03 <- rast("2023-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 Sic24b03 <- rast("2024-01-02-Sentinel-2_L2A_B03_27(Raw).tiff")
 
+
 #NORMALIZED WATER INDEX (NDWI)
 NDWI_2023 <- (Sic23b03 - Sic23b08) / (Sic23b08 + Sic23b03)
 NDWI_2024 <- (Sic24b03 - Sic24b08) / (Sic24b08 + Sic24b03)
@@ -139,7 +150,6 @@ NDWI_2024ext
 
 dev.off()
 par(mfrow=c(1,2))
-
 plot(NDWI_2023, main="NDWI 2023", col=cl)
 plot(NDWI_2024, main="NDWI 2024", col=cl)
 
@@ -163,10 +173,14 @@ summary(NDWI_2023ext)
 summary(NDWI_2024ext)
 summary(NDWI_diff_ext)
 
+#blue band 02
+Sic23b02 <- rast("2023-B02_(Raw).tiff")
+sIC24b02 <- rast("2024-B02_(Raw).tiff")
 
 #ENHANCED VEGETATION INDEX
-EVI_2023 <- crop(2.5 * (Sic23b08 - Sic23b04) / (Sic23b08 + 6 * Sic23b04 - 7.5 * Sic23b03 + 100),ext)
-EVI_2024 <- crop(2.5 * (Sic24b08 - Sic24b04) / (Sic24b08 + 6 * Sic24b04 - 7.5 * Sic24b03 + 100),ext)
+#// General formula: 2.5 * (NIR - RED) / ((NIR + 6*RED - 7.5*BLUE) + 1)
+EVI_2023 <- crop(2.5 * (Sic23b08 - Sic23b04) / (Sic23b08 + 6 * Sic23b04 - 7.5 * Sic23b02 + 1),ext)
+EVI_2024 <- crop(2.5 * (Sic24b08 - Sic24b04) / (Sic24b08 + 6 * Sic24b04 - 7.5 * sIC24b02 + 1),ext)
 
 #clamp intervals
 EVI_2023cl <- clamp(EVI_2023,lower=-1, upper=1)
