@@ -3,16 +3,18 @@
 #Professor 👨‍🔬
 Duccio Rocchini
 
-#student
-Michela Spina 🍉🍉🍉
+#student 🍉
+Michela Spina 🍉
 
 ## list of arguments
-+ script on populations
-+ scripts on communities
-+ scripts of ecosystems
++ final R project
++ all codes in one file
++ population
++ communities
++ remote sensing visualisation
 
 ## notes
-> i am 26
+> i am 27
 > i am graduated in Veteinary Medicine
 > i fight for climate and social justice
 > the whole course will be based on R
