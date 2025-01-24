@@ -110,3 +110,17 @@ EVI_diff <- EVI24cl - EVI23cl
 plot(EVI_diff, main = "Difference EVI (2024 - 2023)", col=cl)
 summary(EVI_diff)
 
+#apply paired T-test between 2023 and 2024
+#to determine if there are significant differences between the means of two related groups
+t.test_NDVI <- t.test(NDVI24_values, NDVI23_values, paired=TRUE)
+t.test_NDWI <- t.test(NDWI24_values, NDWI23_values, paired=TRUE)
+t.test_EVI <- t.test(EVI24_values, EVI23_values, paired=TRUE)
+
+# Stampare i risultati
+print(t.test_NDVI)
+print(t.test_NDWI)
+print(t.test_EVI)
+#Since the p-values are very low (all < 0.05), we reject the null hypothesis
+
+
+
