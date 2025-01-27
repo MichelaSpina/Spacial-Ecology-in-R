@@ -110,17 +110,18 @@ EVI_diff <- EVI24cl - EVI23cl
 plot(EVI_diff, main = "Difference EVI (2024 - 2023)", col=cl)
 summary(EVI_diff)
 
-#apply paired T-test between 2023 and 2024
-#to determine if there are significant differences between the means of two related groups
-t.test_NDVI <- t.test(NDVI24_values, NDVI23_values, paired=TRUE)
-t.test_NDWI <- t.test(NDWI24_values, NDWI23_values, paired=TRUE)
-t.test_EVI <- t.test(EVI24_values, EVI23_values, paired=TRUE)
-
-# Stampare i risultati
-print(t.test_NDVI)
-print(t.test_NDWI)
-print(t.test_EVI)
-#Since the p-values are very low (all < 0.05), we reject the null hypothesis
+#create a map of significant changes for each index
+#the change is considered significant if the value is greater than 0.2 or less than -0.2.
+#False on the map correspond to a non significant change, included in a variation between -0.2 and 0.2
+#NDVI
+significant_changeNDVI <-NDVI_diff > 0.2 | NDVI_diff < -0.2
+plot(significant_changeNDVI, main="Significant change NDVI")
+#NDWI
+significant_changeNDWI <-NDWI_diff > 0.2 | NDWI_diff < -0.2
+plot(significant_changeNDWI, main="Significant change EVI")
+#EVI
+significant_changeEVI <-EVI_diff > 0.2 | EVI_diff < -0.2
+plot(significant_changeEVI, main="Significant change EVI")
 
 
 
