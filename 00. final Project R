@@ -62,7 +62,7 @@ plot(NDVI24, main="NDVI_2024", col=cl)
 #check summary to see the differences
 summary(NDVI23)
 summary(NDVI24)
-# difference of NDVI between 2024 and 2023
+#difference of NDVI between 2024 and 2023
 dev.off()
 NDVI_diff <- NDVI24 - NDVI23
 plot(NDVI_diff, main = "Difference NDVI (2024 - 2023)", col=cl)
@@ -116,12 +116,15 @@ summary(EVI_diff)
 #NDVI
 significant_changeNDVI <-NDVI_diff > 0.2 | NDVI_diff < -0.2
 plot(significant_changeNDVI, main="Significant change NDVI")
+summary(significant_changeNDVI)
 #NDWI
 significant_changeNDWI <-NDWI_diff > 0.2 | NDWI_diff < -0.2
-plot(significant_changeNDWI, main="Significant change EVI")
+plot(significant_changeNDWI, main="Significant change NDWI")
+summary(significant_changeNDWI)
 #EVI
 significant_changeEVI <-EVI_diff > 0.2 | EVI_diff < -0.2
 plot(significant_changeEVI, main="Significant change EVI")
+summary(significant_changeEVI)
 
 
 
