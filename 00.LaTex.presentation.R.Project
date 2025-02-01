@@ -1,0 +1,189 @@
+\documentclass{beamer}
+\usepackage{graphicx} %required for inserting images
+\usepackage{caption}
+\usetheme{Berlin} %for layout
+\usecolortheme{lily} %for colour of theme
+
+
+
+ \section{Introduction}
+\title{Analyzing the Drought Trends in Sicily: A Comparison Between 2023 and 2024 Using Sentinel-2 Images}
+\author{Michela Spina}
+\date{Jenuary 2025}
+
+\begin{document}
+
+\maketitle
+
+ 
+
+\begin{frame}{Libraries}
+To complete the project the following libraries were used:
+    \begin{itemize}
+        \item terra
+        \item imageRy
+        \item ggplot2
+        \item viridis
+        \item raster
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Comparison sicily 23/24 in true color}
+\centering \includegraphics[width=1\linewidth]{FINAL TRUE COLOR.png}
+\end{frame}
+
+\section{Indices}
+
+\begin{frame}{ANALYZED INDICES}
+
+\begin{itemize}
+    \item NDVI (Normalized Different Vegetation Index) 
+    Measures vegetation density and health based on green reflectance band. Positive values indicate healthy vegetation, negative values indicate sparse/absent vegetation.
+    \item NDWI (Normalized Water Index) 
+  Indicates the amount of water present in vegetation and soil by using reflectance in the near-infrared and shortwave infrared bands. Positive values indicate more water availability, negative values suggest dryness.
+    \item EVI (Enhanced Vegetation Index) Similar to NDVI, but with increased sensitivity to areas with dense vegetation and atmospheric corrections. EVI provides detailed information about vegetation health, particularly in areas with high biomass. It can highlight vegetation stress for monitoring the effects of drought over time.
+\end{itemize}
+
+\end{frame}
+
+
+\section{Results}
+
+\begin{frame}{NDVI sicily 23/24 EXTENDED}
+\begin{figure}
+            \centering
+            NDVI23=crop((NIRband23-REDband23)/(NIRband23+REDband23),ext) \\
+            NDVI24=crop((NIRband24-REDband24)/(NIRband24+REDband24), ext) \\
+            \includegraphics[width=1\linewidth]{FINAL NDVI.png}
+    
+              
+\end{figure}
+\end{frame}
+
+\begin{frame}{SUMMARY OF NDVI EXTENDED}
+\begin{tabular}{rcc}
+ \centering
+ & NDVI2023ext & NDVI2024ext \\ \hline
+   Min.   & -1.00000  &   -1.0000 \\               
+ 1st Qu. & -0.35912    &    -0.4611   \\     
+ Median & -0.21951    &    -0.3564   \\
+ Mean   & -0.20135   &     -0.3266 \\         
+ 3rd Qu.& -0.06383    &   -0.2308    \\      
+ Max.   & 1.0000 & 1.0000\\
+\end{tabular}
+\end{frame}
+
+
+\begin{frame}{NDWI sicily 23/24 EXTENDED }
+\begin{figure}
+        \centering
+        NDWI23=crop((GREENband23-NIRband23)/(GREENband23+NIRband23),ext) \\
+        NDWI24=crop((GREENband24-NIRband24)/(GREENband24+NIRband24),ext) \\
+        \includegraphics[width=1\linewidth]{FINAL NDWI.png}
+\end{figure}
+\end{frame}
+
+
+
+
+\begin{frame}{SUMMARY OF NDWI EXTENDED}
+\begin{tabular}{rcc}
+ \centering
+ & NDWI2023 & NDWI2024 \\ \hline
+  Min.   & -1.0000 &  -1.0000  \\       
+ 1st Qu. & 0.1481 &   0.2298    \\          
+ Median & 0.2539    &   0.3298   \\        
+ Mean   & 0.2570   &   0.3217 \\        
+ 3rd Qu.&  0.3613 &   0.4268    \\         
+ Max.   & 1.0000   &    1.0000    \\       
+ NA's   & 3 & 2
+\end{tabular}
+
+\end{frame}
+
+
+\begin{frame}{EVI sicily 23/24 EXTENDED}
+
+       \begin{figure}
+           \centering
+           EVI23=crop(2.5 * (NIRband23 - REDband23) / ((NIRband23 + 6 * REDband23 - 7.5 * BLUEband23) + 1),ext) \\
+           EVI24=crop(2.5 * (NIRband24 - REDband24) / ((NIRband24 + 6 * REDband24 - 7.5 * BLUEband24) + 1),ext) \\
+           \includegraphics[width=1\linewidth]{FINAL EVI.png}
+       \end{figure}
+
+\end{frame}
+
+
+\begin{frame}{SUMMARY OF EVI  23/24 EXTENDED}
+\begin{tabular}{rcc}
+ \centering
+ & EVI2023 & EVI2024 \\ \hline
+  Min.   & -1.0000 &  -1.0000  \\       
+ 1st Qu. & -1.0000    &  -1.0000    \\        
+ Median & -0.6588  &   -0.9480   \\        
+ Mean   & -0.4583 &  -0.6885    \\   
+ 
+ 3rd Qu.& -0.1581   &   0.5507    \\         
+ Max.   & 1.000   &    1.000    \\       
+ 
+\end{tabular}
+\end{frame}
+
+
+\begin{frame}{DIFFERENTIAL INDEX 23.24 RESULTS}
+
+\begin{figure}
+    \centering
+    INDEX.diff <- INDEX24 - INDEX23
+    \includegraphics[width=1\linewidth]{FINAL DIFF.INDEX.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{DIFFERENTIAL INDEX SUMMARY}
+\begin{tabular}{rccc}
+ \centering
+ & NDVI.DIFF & NDWI.DIFF & EVI.DIFF\\ \hline
+  Min.  & -1.91111  & -1.75000  & -2.00000 \\           
+ 1st Qu.& -0.21775  &  -0.01191  & -0.42148  \\       
+ Median & -0.10307     & -0.05511 & -0.06528   \\                            
+ Mean   & -0.12532   & - 0.06467  & -0.23019 \\      
+ 3rd Qu.& -0.01386    & -0.13535  & 0.00000   \\            
+ Max.   & 2.0000   &  1.91241  & 2.00000  \\           
+ NA's   &  18    & 5   \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{SIGNIFICANT CHANGE MAP OF NDVI, NDWI AND EVI}
+
+\begin{figure}
+    \centering
+    To identify which areas in 2024 show significant differences compared to 2023 \\
+    \includegraphics[width=1\linewidth]{FINAL SIGNIFICANT CHANGE MAP.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{SIGNIFICANT CHANGE MAPS SUMMARY}
+\begin{tabular}{rccc}
+ \centering
+ & NDVI.CHANGE & NDWI.CHANGE &EVI.CHANGE\\ \hline 
+  Min.  &0.0000  &      0.0000 &0.0000\\
+ 1st Qu.& 0.0000  &  0.0000& 0.0000   \\       
+ Median & 0.0000   & 0.0000& 0.0000 \\   
+ Mean   & 0.3131   &  0.1633 & 0.4795 \\      
+ 3rd Qu.& 1.0000   &  0.000& 1.0000 \\            
+ Max.   & 1.0000   &   1.0000& 1.0000\\           
+ NA's   &  18    &  5 \\
+\end{tabular}
+\end{frame}
+
+
+    
+\begin{figure}
+    \centering
+     THANK YOU FOR YOUR ATTENTION
+    \includegraphics[width=0.8\linewidth]{FINAL TRUE COLOR.png}
+    
+\end{figure} 
+
+
+\end{document}
