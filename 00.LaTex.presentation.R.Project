@@ -4,8 +4,6 @@
 \usetheme{Berlin} %for layout
 \usecolortheme{lily} %for colour of theme
 
-
-
 \section{Introduction}
 \title{Analyzing the Drought Trends in Sicily: A Comparison Between 2023 and 2024 Using Sentinel-2 Images}
 \author{Michela Spina}
