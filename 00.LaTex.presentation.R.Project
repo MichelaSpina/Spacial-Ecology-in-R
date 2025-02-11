@@ -31,7 +31,6 @@ To complete the project the following libraries were used:
 \section{Indices}
 
 \begin{frame}{ANALYZED INDICES}
-
 \begin{itemize}
     \item NDVI (Normalized Different Vegetation Index) 
     Measures vegetation density and health based on green reflectance band. Positive values indicate healthy vegetation, negative values indicate sparse/absent vegetation.
@@ -146,7 +145,7 @@ To complete the project the following libraries were used:
 \begin{tabular}{rccc}
  \centering
  & NDVI.CHANGE & NDWI.CHANGE &EVI.CHANGE\\ \hline 
-  Min.  &0.0000  &      0.0000 &0.0000\\
+ Min.  &0.0000  &      0.0000 &0.0000\\
  1st Qu.& 0.0000  &  0.0000& 0.0000   \\       
  Median & 0.0000   & 0.0000& 0.0000 \\   
  Mean   & 0.3131   &  0.1633 & 0.4795 \\      
