@@ -6,7 +6,7 @@
 
 
 
- \section{Introduction}
+\section{Introduction}
 \title{Analyzing the Drought Trends in Sicily: A Comparison Between 2023 and 2024 Using Sentinel-2 Images}
 \author{Michela Spina}
 \date{Jenuary 2025}
@@ -14,8 +14,6 @@
 \begin{document}
 
 \maketitle
-
- 
 
 \begin{frame}{Libraries}
 To complete the project the following libraries were used:
@@ -43,9 +41,7 @@ To complete the project the following libraries were used:
   Indicates the amount of water present in vegetation and soil by using reflectance in the near-infrared and shortwave infrared bands. Positive values indicate more water availability, negative values suggest dryness.
     \item EVI (Enhanced Vegetation Index) Similar to NDVI, but with increased sensitivity to areas with dense vegetation and atmospheric corrections. EVI provides detailed information about vegetation health, particularly in areas with high biomass. It can highlight vegetation stress for monitoring the effects of drought over time.
 \end{itemize}
-
 \end{frame}
-
 
 \section{Results}
 
@@ -55,8 +51,6 @@ To complete the project the following libraries were used:
             NDVI23=crop((NIRband23-REDband23)/(NIRband23+REDband23),ext) \\
             NDVI24=crop((NIRband24-REDband24)/(NIRband24+REDband24), ext) \\
             \includegraphics[width=1\linewidth]{FINAL NDVI.png}
-    
-              
 \end{figure}
 \end{frame}
 
@@ -64,7 +58,7 @@ To complete the project the following libraries were used:
 \begin{tabular}{rcc}
  \centering
  & NDVI2023ext & NDVI2024ext \\ \hline
-   Min.   & -1.00000  &   -1.0000 \\               
+ Min.   & -1.00000  &   -1.0000 \\               
  1st Qu. & -0.35912    &    -0.4611   \\     
  Median & -0.21951    &    -0.3564   \\
  Mean   & -0.20135   &     -0.3266 \\         
@@ -72,7 +66,6 @@ To complete the project the following libraries were used:
  Max.   & 1.0000 & 1.0000\\
 \end{tabular}
 \end{frame}
-
 
 \begin{frame}{NDWI sicily 23/24 EXTENDED }
 \begin{figure}
@@ -82,9 +75,6 @@ To complete the project the following libraries were used:
         \includegraphics[width=1\linewidth]{FINAL NDWI.png}
 \end{figure}
 \end{frame}
-
-
-
 
 \begin{frame}{SUMMARY OF NDWI EXTENDED}
 \begin{tabular}{rcc}
@@ -98,19 +88,16 @@ To complete the project the following libraries were used:
  Max.   & 1.0000   &    1.0000    \\       
  NA's   & 3 & 2
 \end{tabular}
-
 \end{frame}
 
 
 \begin{frame}{EVI sicily 23/24 EXTENDED}
-
        \begin{figure}
            \centering
            EVI23=crop(2.5 * (NIRband23 - REDband23) / ((NIRband23 + 6 * REDband23 - 7.5 * BLUEband23) + 1),ext) \\
            EVI24=crop(2.5 * (NIRband24 - REDband24) / ((NIRband24 + 6 * REDband24 - 7.5 * BLUEband24) + 1),ext) \\
            \includegraphics[width=1\linewidth]{FINAL EVI.png}
        \end{figure}
-
 \end{frame}
 
 
@@ -121,17 +108,13 @@ To complete the project the following libraries were used:
   Min.   & -1.0000 &  -1.0000  \\       
  1st Qu. & -1.0000    &  -1.0000    \\        
  Median & -0.6588  &   -0.9480   \\        
- Mean   & -0.4583 &  -0.6885    \\   
- 
+ Mean   & -0.4583 &  -0.6885    \\    
  3rd Qu.& -0.1581   &   0.5507    \\         
  Max.   & 1.000   &    1.000    \\       
- 
 \end{tabular}
 \end{frame}
 
-
 \begin{frame}{DIFFERENTIAL INDEX 23.24 RESULTS}
-
 \begin{figure}
     \centering
     INDEX.diff <- INDEX24 - INDEX23
@@ -154,7 +137,6 @@ To complete the project the following libraries were used:
 \end{frame}
 
 \begin{frame}{SIGNIFICANT CHANGE MAP OF NDVI, NDWI AND EVI}
-
 \begin{figure}
     \centering
     To identify which areas in 2024 show significant differences compared to 2023 \\
@@ -176,14 +158,10 @@ To complete the project the following libraries were used:
 \end{tabular}
 \end{frame}
 
-
-    
 \begin{figure}
     \centering
      THANK YOU FOR YOUR ATTENTION
-    \includegraphics[width=0.8\linewidth]{FINAL TRUE COLOR.png}
-    
+    \includegraphics[width=0.8\linewidth]{FINAL TRUE COLOR.png}   
 \end{figure} 
-
 
 \end{document}
