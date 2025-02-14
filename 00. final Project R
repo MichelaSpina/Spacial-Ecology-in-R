@@ -7,8 +7,6 @@ list.files()
 library(imageRy) #vidualize raster images
 library(terra) #work with raster and spatial data and manipulate satellite images
 library(viridis) #works for colorblind people
-library(ggplot2) #to analyze graphics
-library(stats)
 
 #assign a name to a file raster
 #images are taken from Sentinel-2 mission 
