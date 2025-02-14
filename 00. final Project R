@@ -111,17 +111,17 @@ summary(EVI_diff)
 
 #create a map of significant changes for each index
 #the change is considered significant if the value is greater than 0.2 or less than -0.2.
-#False on the map correspond to a non significant change, included in a variation between -0.2 and 0.2
+#False on the map correspond to a non important change, included in a variation between -0.2 and 0.2
 #NDVI
-significant_changeNDVI <-NDVI_diff > 0.2 | NDVI_diff < -0.2
+important_changeNDVI <-NDVI_diff > 0.2 | NDVI_diff < -0.2
 plot(significant_changeNDVI, main="Significant change NDVI")
 summary(significant_changeNDVI)
 #NDWI
-significant_changeNDWI <-NDWI_diff > 0.2 | NDWI_diff < -0.2
+important_changeNDWI <-NDWI_diff > 0.2 | NDWI_diff < -0.2
 plot(significant_changeNDWI, main="Significant change NDWI")
 summary(significant_changeNDWI)
 #EVI
-significant_changeEVI <-EVI_diff > 0.2 | EVI_diff < -0.2
+important_changeEVI <-EVI_diff > 0.2 | EVI_diff < -0.2
 plot(significant_changeEVI, main="Significant change EVI")
 summary(significant_changeEVI)
 
