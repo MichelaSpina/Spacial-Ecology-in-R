@@ -6,6 +6,7 @@ list.files()
 #read packages with function library
 library(imageRy) #vidualize raster images
 library(terra) #work with raster and spatial data and manipulate satellite images
+library(raster) #manage raster data
 library(viridis) #works for colorblind people
 
 #assign a name to a file raster
