@@ -8,6 +8,7 @@ Michela Spina 🍉
 
 ## list of arguments
 + final R project
++ LateX presentation
 + all codes in one file
 + population
 + communities
